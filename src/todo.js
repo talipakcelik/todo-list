@@ -10,6 +10,7 @@ class todoCreator {
 }
 
 let todoStore = [];
+let taskId = "";
 
 function pushTodoIntoArray() {
   const title = titleInput.value;
@@ -19,6 +20,10 @@ function pushTodoIntoArray() {
   todoStore.push(newTodo);
 }
 
+function loopTodoStore() {
+  const values = Object.values(todoStore);
+  for (const { id } of values) taskId = id;
+}
 // pushTodoIntoArray();
 console.log(todoStore);
 
@@ -31,6 +36,7 @@ function renderToScreen() {
   ///
   const date = document.createElement("input");
   date.classList.add("date");
+  date.setAttribute("id", `${taskId}`);
   date.type = "date";
   ///
   const deleteButton = document.createElement("button");
@@ -47,7 +53,16 @@ function renderToScreen() {
     console.log("dd");
   });
 
-  date.addEventListener("click", function () {});
+  date.addEventListener("change", function (e) {
+    const found = todoStore.find((el) => el.id === date.getAttribute("id"));
+    found.dueDate = e.target.value;
+  });
 }
 
-export { todoStore, pushTodoIntoArray, todoCreator, renderToScreen };
+export {
+  todoStore,
+  pushTodoIntoArray,
+  todoCreator,
+  renderToScreen,
+  loopTodoStore,
+};
