@@ -1,0 +1,93 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* font-family: "Rubik", sans-serif; */
+  font-size: 62.5%;
+  color: #444;
+}
+
+nav {
+  background-color: #343a40;
+  grid-row: 1 / -1;
+  color: white;
+}
+
+menu {
+  background-color: #7048e8;
+  grid-column: 2 / -1;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0 4rem;
+}
+
+section {
+  background-color: #e9ecef;
+  padding: 4rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  overflow: scroll;
+}
+aside {
+  background-color: #e9ecef;
+}
+
+body {
+  display: grid;
+  grid-template-columns: 8rem 40rem 1fr 25rem;
+  grid-template-rows: 8rem 1fr;
+  height: 100vh;
+  text-align: center; /* inherited */
+  font-size: 2.2rem;
+}
+
+nav,
+section,
+main,
+aside {
+  padding-top: 2.4rem;
+}
+
+button {
+  display: inline-block;
+  font-size: 1.6rem;
+  background-color: #5f3dc4;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  font-weight: bold;
+}
+
+.trash {
+  background-color: #d6336c;
+  margin-left: auto;
+}
+
+.sidebar {
+  background-color: #adb5bd;
+  height: 9.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.task-container {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: center;
+}
