@@ -36,6 +36,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: "todo-list",
       filename: "index.html",
+      template: path.resolve(__dirname, "src/temp.html"),
     }),
   ],
 };
