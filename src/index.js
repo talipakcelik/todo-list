@@ -78,6 +78,10 @@ section.addEventListener("click", function (e) {
     document.querySelector(".project-title").textContent =
       e.target.value || "Untitled";
     //   // }
+    const list = document.querySelectorAll(".task-list");
+    for (const element of list) {
+      element.remove();
+    }
   }
 });
 
