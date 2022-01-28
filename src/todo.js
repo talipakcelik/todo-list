@@ -1,12 +1,14 @@
-import { titleInput, taskList } from "./index.js";
+import { ta } from "date-fns/locale";
+import { titleInput, taskList, projectContainer } from "./index.js";
 
 class todoCreator {
-  constructor(check, title, description, dueDate) {
+  constructor(check, title, description, dueDate, projectName) {
     this.check = check;
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.id = self.crypto.randomUUID();
+    this.projectName = projectName;
   }
   toggleCheck() {
     this.check = !this.check;
@@ -32,7 +34,38 @@ function loopTodoStore() {
 // pushTodoIntoArray();
 console.log(todoStore);
 
+function projectCreator() {
+  const check = false;
+  const title = titleInput.value;
+  // const projectName = taskId;
+  const newTodo = new todoCreator(check, title);
+  todoStore.push(newTodo);
+  ////
+  const newProject = document.createElement("input");
+  newProject.placeholder = "Untitled";
+  newProject.classList.add("new-project");
+  newProject.setAttribute("id", `${self.crypto.randomUUID()}`);
+  const projectAdd = document.createElement("span");
+  projectAdd.textContent = "+";
+  projectAdd.classList.add("add-project");
+
+  projectContainer.append(newProject);
+  projectContainer.append(projectAdd);
+  //   const projectTitle = document.createElement("h2");
+  //   projectTitle.classList.add("project-title");
+  //   projectTitle.setAttribute("id", `${taskId}`);
+  //   main.prepend(projectTitle);
+  //   projectTitle.textContent = "Untitled";
+  //   newProject.addEventListener("change", function (e) {
+  //     projectTitle.textContent = e.target.value;
+  //   });
+  // }
+}
 function renderToScreen() {
+  const main = document.querySelector("main");
+  const taskList = document.createElement("div");
+  taskList.classList.add("task-list");
+  ////
   const taskContainer = document.createElement("div");
   taskContainer.classList.add("task-container");
   ///
@@ -54,6 +87,8 @@ function renderToScreen() {
   deleteButton.classList.add("delete");
   deleteButton.textContent = "delete";
   ////
+  main.append(taskList);
+
   taskList.append(taskContainer);
   taskContainer.append(check);
   taskContainer.append(newTask);
@@ -86,4 +121,5 @@ export {
   todoCreator,
   renderToScreen,
   loopTodoStore,
+  projectCreator,
 };
