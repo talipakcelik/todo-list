@@ -1,5 +1,10 @@
 import { ta } from "date-fns/locale";
-import { titleInput, taskList, projectContainer } from "./index.js";
+import {
+  titleInput,
+  taskList,
+  projectContainer,
+  projectIndex,
+} from "./index.js";
 
 class todoCreator {
   constructor(check, title, description, dueDate, projectName) {
@@ -21,7 +26,6 @@ let taskId = "";
 function pushTodoIntoArray() {
   const check = false;
   const title = titleInput.value;
-  // const date = document.querySelector(".date").value;
 
   const newTodo = new todoCreator(check, title);
   todoStore.push(newTodo);
@@ -31,36 +35,29 @@ function loopTodoStore() {
   const values = Object.values(todoStore);
   for (const { id } of values) taskId = id;
 }
-// pushTodoIntoArray();
+
 console.log(todoStore);
 
-function projectCreator() {
-  const check = false;
-  const title = titleInput.value;
-  // const projectName = taskId;
-  const newTodo = new todoCreator(check, title);
-  todoStore.push(newTodo);
-  ////
+let projectsTaskStore = [];
+
+function projectAdd() {
   const newProject = document.createElement("input");
   newProject.placeholder = "Untitled";
   newProject.classList.add("new-project");
   newProject.setAttribute("id", `${self.crypto.randomUUID()}`);
-  const projectAdd = document.createElement("span");
-  projectAdd.textContent = "+";
-  projectAdd.classList.add("add-project");
-
   projectContainer.append(newProject);
-  projectContainer.append(projectAdd);
-  //   const projectTitle = document.createElement("h2");
-  //   projectTitle.classList.add("project-title");
-  //   projectTitle.setAttribute("id", `${taskId}`);
-  //   main.prepend(projectTitle);
-  //   projectTitle.textContent = "Untitled";
-  //   newProject.addEventListener("change", function (e) {
-  //     projectTitle.textContent = e.target.value;
-  //   });
-  // }
 }
+
+function projectCreator() {
+  const check = false;
+  const title = titleInput.value;
+  const description = projectIndex;
+  // const projectName = taskId;
+  const newTodo = new todoCreator(check, title, description);
+  projectsTaskStore.push(newTodo);
+  console.log(projectsTaskStore);
+}
+
 function renderToScreen() {
   const main = document.querySelector("main");
   const taskList = document.createElement("div");
@@ -122,4 +119,6 @@ export {
   renderToScreen,
   loopTodoStore,
   projectCreator,
+  projectsTaskStore,
+  projectAdd,
 };

@@ -5,6 +5,8 @@ import {
   renderToScreen,
   loopTodoStore,
   projectCreator,
+  projectsTaskStore,
+  projectAdd,
 } from "./todo.js";
 import style from "./style.css";
 
@@ -20,25 +22,21 @@ const projectContainer = document.querySelector(".project-container");
 // const deleteButton = document.querySelector(".delete");
 
 buttonInput.addEventListener("click", function () {
-  pushTodoIntoArray();
-  loopTodoStore();
-  renderToScreen();
+  if (document.querySelector(".project-title")) {
+    projectCreator();
+  } else {
+    pushTodoIntoArray();
+    loopTodoStore();
+    renderToScreen();
+  }
   console.log(todoStore);
+  console.log(projectsTaskStore);
 });
 
 menu.addEventListener("click", function (e) {
   if (e.target.textContent === "New") {
-    projectCreator();
-    // const newProject = document.createElement("input");
-    // newProject.placeholder = "Untitled";
-    // newProject.classList.add("new-project");
-    // const projectAdd = document.createElement("span");
-    // projectAdd.textContent = "+";
-    // projectAdd.classList.add("add-project");
+    projectAdd();
 
-    // projectContainer.append(newProject);
-    // projectContainer.append(projectAdd);
-    /////
     if (!document.querySelector(".project-title")) {
       // taskList.remove();
       if (document.querySelector(".task-container")) {
@@ -57,32 +55,28 @@ menu.addEventListener("click", function (e) {
     }
   }
 });
+
+let projectIndex = "";
+
 section.addEventListener("click", function (e) {
   if (e.target.textContent === "Projects") {
-    //   taskList.remove();
-    //   const projectsHeader = document.createElement("h1");
-    //   projectsHeader.textContent = "Project";
-    //   main.append(projectsHeader);
   }
   if (e.target.classList.contains("add-project")) {
     if (!document.querySelector(".project-title")) {
-      // taskList.remove();
-      // const projectTitle = document.createElement("h2");
-      // projectTitle.classList.add("project-title");
-      // main.append(projectTitle);
-      // projectTitle.textContent = e.target.previousSibling.value;
     }
   }
   if (e.target.placeholder === "Untitled") {
-    //   // if (!document.querySelector(".project-title").textContent === "Untitled") {
     document.querySelector(".project-title").textContent =
       e.target.value || "Untitled";
-    //   // }
     const list = document.querySelectorAll(".task-list");
     for (const element of list) {
       element.remove();
     }
+    projectIndex = [...Array.from(e.target.parentElement.children)].indexOf(
+      e.target
+    );
+    console.log(projectIndex);
   }
 });
 
-export { taskList, titleInput, projectContainer };
+export { taskList, titleInput, projectContainer, projectIndex };
