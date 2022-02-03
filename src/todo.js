@@ -26,8 +26,9 @@ let taskId = "";
 function pushTodoIntoArray() {
   const check = false;
   const title = titleInput.value;
+  const description = projectIndex;
 
-  const newTodo = new todoCreator(check, title);
+  const newTodo = new todoCreator(check, title, description);
   todoStore.push(newTodo);
 }
 
@@ -48,15 +49,15 @@ function projectAdd() {
   projectContainer.append(newProject);
 }
 
-function projectCreator() {
-  const check = false;
-  const title = titleInput.value;
-  const description = projectIndex;
-  // const projectName = taskId;
-  const newTodo = new todoCreator(check, title, description);
-  projectsTaskStore.push(newTodo);
-  console.log(projectsTaskStore);
-}
+// function projectCreator() {
+//   const check = false;
+//   const title = titleInput.value;
+//   const description = projectIndex;
+//   // const projectName = taskId;
+//   const newTodo = new todoCreator(check, title, description);
+//   projectsTaskStore.push(newTodo);
+//   console.log(projectsTaskStore);
+// }
 
 function renderToScreen() {
   const main = document.querySelector("main");
@@ -71,7 +72,7 @@ function renderToScreen() {
   ///
   const date = document.createElement("input");
   date.classList.add("date");
-  date.setAttribute("id", `${taskId}`);
+  // date.setAttribute("id", `${taskId}`);
   date.type = "date";
   ///
   const check = document.createElement("input");
@@ -83,6 +84,7 @@ function renderToScreen() {
   const deleteButton = document.createElement("button");
   deleteButton.classList.add("delete");
   deleteButton.textContent = "delete";
+  deleteButton.setAttribute("id", `${taskId}`);
   ////
   main.append(taskList);
 
@@ -94,6 +96,11 @@ function renderToScreen() {
 
   deleteButton.addEventListener("click", function (e) {
     e.target.parentElement.remove();
+    const foundIndex = todoStore.findIndex(
+      (el) => el.id === e.target.getAttribute("id")
+    );
+    todoStore.splice(foundIndex, 1);
+    console.log(foundIndex);
   });
 
   date.addEventListener("change", function (e) {
@@ -118,7 +125,5 @@ export {
   todoCreator,
   renderToScreen,
   loopTodoStore,
-  projectCreator,
-  projectsTaskStore,
   projectAdd,
 };
