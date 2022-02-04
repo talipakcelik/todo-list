@@ -7,6 +7,7 @@ import {
   projectAdd,
 } from "./todo.js";
 import style from "./style.css";
+import { format } from "date-fns";
 
 const taskList = document.querySelector(".task-list");
 const deneme = document.querySelector(".deneme");
@@ -83,6 +84,22 @@ section.addEventListener("click", function (e) {
       element.style.display = "";
     }
   }
+
+  if (e.target.textContent === "Today") {
+    const today = format(new Date(), "yyyy-MM-dd");
+    console.log(today);
+
+    const displayToday = document.querySelectorAll(".date");
+    for (const element of displayToday) {
+      console.log(element.value);
+      if (element.value === today) {
+        element.parentElement.parentElement.style.display = "";
+      } else if (element.value !== today) {
+        element.parentElement.parentElement.style.display = "none";
+      }
+    }
+  }
+
   // if (projectIndex !== )
 });
 
