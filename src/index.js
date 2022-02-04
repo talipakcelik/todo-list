@@ -4,8 +4,6 @@ import {
   todoStore,
   renderToScreen,
   loopTodoStore,
-  projectCreator,
-  projectsTaskStore,
   projectAdd,
 } from "./todo.js";
 import style from "./style.css";
@@ -21,16 +19,15 @@ const projectContainer = document.querySelector(".project-container");
 
 // const deleteButton = document.querySelector(".delete");
 
+let projectIndex = 0;
+
 buttonInput.addEventListener("click", function () {
-  if (document.querySelector(".project-title")) {
-    projectCreator();
-  } else {
-    pushTodoIntoArray();
-    loopTodoStore();
-    renderToScreen();
-  }
+  pushTodoIntoArray();
+  loopTodoStore();
+  renderToScreen();
+
   console.log(todoStore);
-  console.log(projectsTaskStore);
+  // console.log(projectsTaskStore);
 });
 
 menu.addEventListener("click", function (e) {
@@ -56,8 +53,6 @@ menu.addEventListener("click", function (e) {
   }
 });
 
-let projectIndex = "";
-
 section.addEventListener("click", function (e) {
   if (e.target.textContent === "Projects") {
   }
@@ -65,18 +60,30 @@ section.addEventListener("click", function (e) {
     if (!document.querySelector(".project-title")) {
     }
   }
+  if (e.target.textContent === "Home") {
+    projectIndex = 0;
+  }
   if (e.target.placeholder === "Untitled") {
     document.querySelector(".project-title").textContent =
       e.target.value || "Untitled";
-    const list = document.querySelectorAll(".task-list");
-    for (const element of list) {
-      element.remove();
-    }
+    // const list = document.querySelectorAll(".task-list");
+    // for (const element of list) {
+    //   element.remove();
+    // }
     projectIndex = [...Array.from(e.target.parentElement.children)].indexOf(
       e.target
     );
     console.log(projectIndex);
   }
+  const displayProject = document.querySelectorAll(".task-list");
+  for (const element of displayProject) {
+    if (!element.classList.contains(projectIndex)) {
+      element.style.display = "none";
+    } else if (element.classList.contains(projectIndex)) {
+      element.style.display = "";
+    }
+  }
+  // if (projectIndex !== )
 });
 
 export { taskList, titleInput, projectContainer, projectIndex };
