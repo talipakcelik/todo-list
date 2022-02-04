@@ -7,7 +7,7 @@ import {
   projectAdd,
 } from "./todo.js";
 import style from "./style.css";
-import { format } from "date-fns";
+import { format, startOfWeek, endOfWeek, eachDayOfInterval } from "date-fns";
 
 const taskList = document.querySelector(".task-list");
 const deneme = document.querySelector(".deneme");
@@ -18,8 +18,6 @@ const main = document.querySelector("main");
 const menu = document.querySelector("menu");
 const projectContainer = document.querySelector(".project-container");
 
-// const deleteButton = document.querySelector(".delete");
-
 let projectIndex = 0;
 
 buttonInput.addEventListener("click", function () {
@@ -28,7 +26,6 @@ buttonInput.addEventListener("click", function () {
   renderToScreen();
 
   console.log(todoStore);
-  // console.log(projectsTaskStore);
 });
 
 menu.addEventListener("click", function (e) {
@@ -67,10 +64,7 @@ section.addEventListener("click", function (e) {
   if (e.target.placeholder === "Untitled") {
     document.querySelector(".project-title").textContent =
       e.target.value || "Untitled";
-    // const list = document.querySelectorAll(".task-list");
-    // for (const element of list) {
-    //   element.remove();
-    // }
+
     projectIndex = [...Array.from(e.target.parentElement.children)].indexOf(
       e.target
     );
@@ -91,7 +85,6 @@ section.addEventListener("click", function (e) {
 
     const displayToday = document.querySelectorAll(".date");
     for (const element of displayToday) {
-      console.log(element.value);
       if (element.value === today) {
         element.parentElement.parentElement.style.display = "";
       } else if (element.value !== today) {
@@ -100,7 +93,32 @@ section.addEventListener("click", function (e) {
     }
   }
 
-  // if (projectIndex !== )
+  if (e.target.textContent === "Week") {
+    const today = new Date();
+
+    const interval = eachDayOfInterval({
+      start: startOfWeek(today),
+      end: endOfWeek(today),
+    });
+
+    let thisWeekArray = [];
+
+    interval.forEach((el) => {
+      const formatted = format(el, "yyyy-MM-dd");
+      thisWeekArray.push(formatted);
+    });
+
+    console.log(thisWeekArray);
+
+    const displayWeek = document.querySelectorAll(".date");
+    for (const element of displayWeek) {
+      if (thisWeekArray.includes(element.value)) {
+        element.parentElement.parentElement.style.display = "";
+      } else {
+        element.parentElement.parentElement.style.display = "none";
+      }
+    }
+  }
 });
 
 export { taskList, titleInput, projectContainer, projectIndex };
