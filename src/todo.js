@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import {
   titleInput,
   taskList,
@@ -70,11 +71,11 @@ function renderToScreen() {
   const newTask = document.createElement("p");
   newTask.classList.add("task-title");
   newTask.textContent = titleInput.value;
+  newTask.contentEditable = "true";
   ///
   const newDescription = document.createElement("p");
   newDescription.classList.add("task-description");
-  newDescription.textContent = descriptionInput.value;
-  // newDescription.classList.toggle(`${projectIndex}`);
+  newDescription.textContent = `Description: ${descriptionInput.value}`;
 
   ///
   const date = document.createElement("input");
@@ -97,10 +98,8 @@ function renderToScreen() {
   deleteButton.textContent = "delete";
   deleteButton.setAttribute("id", `${taskId}`);
   ////
-  const descriptionDate = date.cloneNode(true);
-  descriptionDate.classList.remove("hidden");
+
   main.append(taskList);
-  ///
 
   taskList.append(taskContainer);
   taskContainer.append(check);
@@ -109,14 +108,14 @@ function renderToScreen() {
   taskContainer.append(date);
 
   descriptionContainer.append(newDescription);
-  dateContainer.append(descriptionDate);
+
+  const parseDateInput = date.value.split("-");
+  console.log(parseDateInput);
+
+  dateContainer.textContent = `Due date: ${parseDateInput[2]}/${parseDateInput[1]}/${parseDateInput[0]}`;
 
   if (newDescription.previousSibling) {
     newDescription.previousSibling.remove();
-  }
-
-  if (descriptionDate.previousSibling) {
-    descriptionDate.previousSibling.remove();
   }
 
   deleteButton.addEventListener("click", function (e) {
@@ -127,6 +126,7 @@ function renderToScreen() {
     todoStore.splice(foundIndex, 1);
     console.log(foundIndex);
     document.querySelector(".task-description").textContent = "";
+    dateContainer.textContent = "";
   });
 
   date.addEventListener("change", function (e) {
@@ -150,15 +150,14 @@ function renderToScreen() {
       const found = todoStore.find(
         (el) => el.id === e.target.getAttribute("id")
       );
-      const cloneDate = e.target.lastChild.cloneNode();
-      cloneDate.classList.remove("hidden");
-      descriptionDate.remove();
 
-      dateContainer.append(cloneDate);
-      cloneDate.previousSibling.remove();
+      const parseDate = e.target.lastChild.value.split("-");
 
-      document.querySelector(".task-description").textContent =
-        found.description;
+      dateContainer.textContent = `Due date: ${parseDate[2]}/${parseDate[1]}/${parseDate[0]}`;
+
+      document.querySelector(
+        ".task-description"
+      ).textContent = `Description: ${found.description}`;
     }
   });
 }
