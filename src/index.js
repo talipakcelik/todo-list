@@ -5,18 +5,23 @@ import {
   renderToScreen,
   loopTodoStore,
   projectAdd,
+  closeModal,
+  openModal,
 } from "./todo.js";
 import style from "./style.css";
 import { format, startOfWeek, endOfWeek, eachDayOfInterval } from "date-fns";
 
 const taskList = document.querySelector(".task-list");
-const deneme = document.querySelector(".deneme");
 const titleInput = document.querySelector(".title-input");
 const buttonInput = document.querySelector(".button-input");
 const section = document.querySelector("section");
 const main = document.querySelector("main");
 const menu = document.querySelector("menu");
 const projectContainer = document.querySelector(".project-container");
+const modal = document.querySelector(".modal");
+const overlay = document.querySelector(".overlay");
+const btnCloseModal = document.querySelector(".close-modal");
+const btnOpenModal = document.querySelector(".show-modal");
 
 let projectIndex = 0;
 
@@ -117,6 +122,16 @@ section.addEventListener("click", function (e) {
         element.parentElement.parentElement.style.display = "none";
       }
     }
+  }
+});
+
+btnOpenModal.addEventListener("click", openModal);
+btnCloseModal.addEventListener("click", closeModal);
+overlay.addEventListener("click", closeModal);
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+    closeModal();
   }
 });
 

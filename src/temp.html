@@ -11,8 +11,12 @@
     <menu>
       <button>New</button>
       <div>
-        <input type="text" name="" id="" class="title-input" />
-        <button class="button-input">Add</button>
+        <button class="show-modal">New task</button>
+        <div class="modal hidden">
+          <button class="close-modal">&times;</button>
+          <input type="text" name="" id="" class="title-input" />
+          <button class="button-input">Add</button>
+        </div>
       </div>
       <button class="trash">Trash</button>
     </menu>
@@ -29,5 +33,6 @@
       <div class="task-list"></div>
     </main>
     <aside>Additional Info</aside>
+    <div class="overlay hidden"></div>
   </body>
 </html>

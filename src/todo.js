@@ -5,6 +5,9 @@ import {
   projectIndex,
 } from "./index.js";
 
+const modal = document.querySelector(".modal");
+const overlay = document.querySelector(".overlay");
+
 class todoCreator {
   constructor(check, title, description, dueDate, projectName) {
     this.check = check;
@@ -112,6 +115,16 @@ function renderToScreen() {
   });
 }
 
+function openModal() {
+  modal.classList.remove("hidden");
+  overlay.classList.remove("hidden");
+}
+
+function closeModal() {
+  modal.classList.add("hidden");
+  overlay.classList.add("hidden");
+}
+
 export {
   todoStore,
   pushTodoIntoArray,
@@ -119,4 +132,6 @@ export {
   renderToScreen,
   loopTodoStore,
   projectAdd,
+  closeModal,
+  openModal,
 };
