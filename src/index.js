@@ -12,12 +12,18 @@ import style from "./style.css";
 import { format, startOfWeek, endOfWeek, eachDayOfInterval } from "date-fns";
 
 const taskList = document.querySelector(".task-list");
+const taskContainer = document.querySelector(".task-container");
 const titleInput = document.querySelector(".title-input");
+const descriptionInput = document.querySelector(".description-input");
+const dateInput = document.querySelector(".date-input");
 const buttonInput = document.querySelector(".button-input");
 const section = document.querySelector("section");
 const main = document.querySelector("main");
 const menu = document.querySelector("menu");
+const aside = document.querySelector("aside");
 const projectContainer = document.querySelector(".project-container");
+const descriptionContainer = document.querySelector(".description-container");
+const dateContainer = document.querySelector(".date-container");
 const modal = document.querySelector(".modal");
 const overlay = document.querySelector(".overlay");
 const btnCloseModal = document.querySelector(".close-modal");
@@ -97,7 +103,7 @@ section.addEventListener("click", function (e) {
     }
   }
 
-  if (e.target.textContent === "Week") {
+  if (e.target.textContent === "This week") {
     const today = new Date();
 
     const interval = eachDayOfInterval({
@@ -111,8 +117,6 @@ section.addEventListener("click", function (e) {
       const formatted = format(el, "yyyy-MM-dd");
       thisWeekArray.push(formatted);
     });
-
-    console.log(thisWeekArray);
 
     const displayWeek = document.querySelectorAll(".date");
     for (const element of displayWeek) {
@@ -135,4 +139,16 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
-export { taskList, titleInput, projectContainer, projectIndex };
+export {
+  taskList,
+  titleInput,
+  projectContainer,
+  projectIndex,
+  modal,
+  overlay,
+  descriptionInput,
+  aside,
+  descriptionContainer,
+  dateInput,
+  dateContainer,
+};
