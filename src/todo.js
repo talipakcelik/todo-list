@@ -1,4 +1,3 @@
-import { ta } from "date-fns/locale";
 import {
   titleInput,
   taskList,
@@ -49,35 +48,28 @@ function projectAdd() {
   projectContainer.append(newProject);
 }
 
-// function projectCreator() {
-//   const check = false;
-//   const title = titleInput.value;
-//   const description = projectIndex;
-//   // const projectName = taskId;
-//   const newTodo = new todoCreator(check, title, description);
-//   projectsTaskStore.push(newTodo);
-//   console.log(projectsTaskStore);
-// }
-
 function renderToScreen() {
   const main = document.querySelector("main");
   const taskList = document.createElement("div");
-  taskList.classList.add("task-list");
+  taskList.classList.add(`task-list`);
+  taskList.classList.toggle(`${projectIndex}`);
   ////
   const taskContainer = document.createElement("div");
-  taskContainer.classList.add("task-container");
+  taskContainer.classList.add(`task-container`);
+
   ///
   const newTask = document.createElement("p");
   newTask.textContent = titleInput.value;
   ///
   const date = document.createElement("input");
   date.classList.add("date");
-  // date.setAttribute("id", `${taskId}`);
+  date.setAttribute("id", `${taskId}`);
   date.type = "date";
   ///
   const check = document.createElement("input");
   check.type = "checkbox";
   check.checked = false;
+  check.classList.add("check");
   check.setAttribute("id", `${taskId}`);
 
   ///
@@ -106,6 +98,7 @@ function renderToScreen() {
   date.addEventListener("change", function (e) {
     const found = todoStore.find((el) => el.id === e.target.getAttribute("id"));
     found.dueDate = e.target.value;
+    console.log(found);
   });
 
   check.addEventListener("change", function (e) {

@@ -33,7 +33,6 @@ menu.addEventListener("click", function (e) {
     projectAdd();
 
     if (!document.querySelector(".project-title")) {
-      // taskList.remove();
       if (document.querySelector(".task-container")) {
         document.querySelector(".task-container").remove();
       }
@@ -52,8 +51,8 @@ menu.addEventListener("click", function (e) {
 });
 
 section.addEventListener("click", function (e) {
-  if (e.target.textContent === "Projects") {
-  }
+  // if (e.target.textContent === "Projects") {
+  // }
   if (e.target.classList.contains("add-project")) {
     if (!document.querySelector(".project-title")) {
     }
