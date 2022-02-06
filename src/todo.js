@@ -7,7 +7,6 @@ import {
   modal,
   overlay,
   descriptionInput,
-  aside,
   descriptionContainer,
   dateInput,
   dateContainer,
@@ -62,6 +61,16 @@ function projectAdd() {
   const delProject = document.createElement("span");
   delProject.innerHTML = '<ion-icon name="trash-outline"></ion-icon>';
   projectCon.append(delProject);
+  delProject.style.display = "none";
+
+  projectCon.addEventListener("mouseover", function (e) {
+    delProject.style.display = "";
+    console.log("ddd");
+  });
+  projectCon.addEventListener("mouseleave", function (e) {
+    delProject.style.display = "none";
+    console.log("dddasfasf");
+  });
 }
 
 function renderToScreen() {
@@ -83,10 +92,6 @@ function renderToScreen() {
   ///
   const newDescription = document.createElement("p");
   newDescription.classList.add("task-description");
-
-  console.log(typeof descriptionInput.value);
-  console.log(descriptionInput.value);
-  console.log(descriptionInput.value.length);
 
   if (descriptionInput.value.length === 0) {
     newDescription.textContent = `Description: unspecified`;
@@ -114,6 +119,7 @@ function renderToScreen() {
   deleteButton.classList.add("delete");
   deleteButton.innerHTML = '<ion-icon name="trash-outline"></ion-icon>';
   deleteButton.setAttribute("id", `${taskId}`);
+  deleteButton.style.display = "none";
   ////
 
   main.append(taskList);
@@ -144,7 +150,7 @@ function renderToScreen() {
       (el) => el.id === e.target.getAttribute("id")
     );
     todoStore.splice(foundIndex, 1);
-    console.log(foundIndex);
+
     document.querySelector(".task-description").textContent = "";
     dateContainer.textContent = "";
   });
@@ -166,7 +172,11 @@ function renderToScreen() {
   });
 
   taskList.addEventListener("click", function (e) {
-    if (e.target.getAttribute("class") !== "md hydrated") {
+    if (
+      e.target.getAttribute("class") !== "md hydrated" &&
+      e.target.getAttribute("class") !== "check" &&
+      e.target.getAttribute("class") !== "task-title"
+    ) {
       const found = todoStore.find(
         (el) => el.id === e.target.getAttribute("id")
       );
@@ -188,6 +198,14 @@ function renderToScreen() {
         dateContainer.textContent = `Due date: unspecified`;
       }
     }
+  });
+
+  taskList.addEventListener("mouseover", function (e) {
+    deleteButton.style.display = "";
+  });
+
+  taskList.addEventListener("mouseleave", function (e) {
+    deleteButton.style.display = "none";
   });
 }
 
