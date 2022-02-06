@@ -1,5 +1,4 @@
 import {
-  todoCreator,
   pushTodoIntoArray,
   todoStore,
   renderToScreen,
@@ -28,6 +27,7 @@ const modal = document.querySelector(".modal");
 const overlay = document.querySelector(".overlay");
 const btnCloseModal = document.querySelector(".close-modal");
 const btnOpenModal = document.querySelector(".show-modal");
+const projectTitle = document.querySelector(".project-title");
 
 let projectIndex = 0;
 
@@ -50,30 +50,29 @@ menu.addEventListener("click", function (e) {
         document.querySelector(".task-container").remove();
       }
 
-      const projectTitle = document.createElement("h2");
-      projectTitle.classList.add("project-title");
-      main.prepend(projectTitle);
       projectTitle.textContent = "Untitled";
-      document
-        .querySelector(".new-project")
-        .addEventListener("change", function (e) {
-          projectTitle.textContent = e.target.value;
-        });
     }
   }
 });
 
 section.addEventListener("click", function (e) {
   if (e.target.textContent === "Home") {
+    projectTitle.textContent = "Home";
     projectIndex = 0;
   }
   if (e.target.placeholder === "Untitled") {
     document.querySelector(".project-title").textContent =
       e.target.value || e.target.placeholder;
-
     projectIndex = [
       ...Array.from(e.target.parentElement.parentElement.children),
     ].indexOf(e.target.parentElement);
+
+    const allProject = document.querySelectorAll(".new-project");
+    allProject.forEach((project) => {
+      project.addEventListener("change", function (e) {
+        projectTitle.textContent = e.target.value;
+      });
+    });
   }
   const displayProject = document.querySelectorAll(".task-list");
   for (const element of displayProject) {
@@ -85,6 +84,7 @@ section.addEventListener("click", function (e) {
   }
 
   if (e.target.textContent === "Today") {
+    projectTitle.textContent = "Today";
     const today = format(new Date(), "yyyy-MM-dd");
     console.log(today);
 
@@ -99,6 +99,8 @@ section.addEventListener("click", function (e) {
   }
 
   if (e.target.textContent === "This week") {
+    projectTitle.textContent = "This week";
+
     const today = new Date();
 
     const interval = eachDayOfInterval({
@@ -139,6 +141,8 @@ section.addEventListener("click", function (e) {
         todoStore.splice(foundIndex, 1);
       }
     });
+
+    document.querySelector(".project-title").textContent = "";
   }
 });
 
