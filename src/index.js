@@ -11,13 +11,11 @@ import style from "./style.css";
 import { format, startOfWeek, endOfWeek, eachDayOfInterval } from "date-fns";
 
 const taskList = document.querySelector(".task-list");
-const taskContainer = document.querySelector(".task-container");
 const titleInput = document.querySelector(".title-input");
 const descriptionInput = document.querySelector(".description-input");
 const dateInput = document.querySelector(".date-input");
 const submit = document.querySelector("#submit");
 const section = document.querySelector("section");
-const main = document.querySelector("main");
 const menu = document.querySelector("menu");
 const aside = document.querySelector("aside");
 const projectContainer = document.querySelector(".project-container");
@@ -28,6 +26,7 @@ const overlay = document.querySelector(".overlay");
 const btnCloseModal = document.querySelector(".close-modal");
 const btnOpenModal = document.querySelector(".show-modal");
 const projectTitle = document.querySelector(".project-title");
+const trash = document.querySelector(".trash");
 
 let projectIndex = 0;
 
@@ -42,7 +41,7 @@ submit.addEventListener("click", function () {
 });
 
 menu.addEventListener("click", function (e) {
-  if (e.target.textContent === "New project") {
+  if (e.target.textContent === "New Project") {
     projectAdd();
 
     if (!document.querySelector(".project-title")) {
@@ -86,7 +85,6 @@ section.addEventListener("click", function (e) {
   if (e.target.textContent === "Today") {
     projectTitle.textContent = "Today";
     const today = format(new Date(), "yyyy-MM-dd");
-    console.log(today);
 
     const displayToday = document.querySelectorAll(".date");
     for (const element of displayToday) {
@@ -154,6 +152,30 @@ document.addEventListener("keydown", function (e) {
   if (e.key === "Escape" && !modal.classList.contains("hidden")) {
     closeModal();
   }
+});
+
+trash.addEventListener("click", function () {
+  const taskTitleAll = document.querySelectorAll(".task-title");
+  for (const element of taskTitleAll) {
+    if (element.style.textDecoration === "line-through") {
+      element.parentElement.remove();
+    }
+  }
+
+  const atLeast = todoStore.some((el) => el.check === true);
+
+  if (atLeast === false) {
+    alert(
+      "You haven't completed any tasks yet or you have already completed your tasks ❗ \nCheck the box when the task is done ✔"
+    );
+  }
+
+  todoStore.forEach(() => {
+    const foundIndex = todoStore.findIndex((el) => el.check === true);
+    if (foundIndex !== -1) {
+      todoStore.splice(foundIndex, 1);
+    }
+  });
 });
 
 export {
