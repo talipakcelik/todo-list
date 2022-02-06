@@ -9,27 +9,31 @@
   <body>
     <nav>Nav</nav>
     <menu>
-      <button>New</button>
+      <button>New project</button>
       <div>
         <button class="show-modal">New task</button>
         <div class="modal hidden">
           <button class="close-modal">&times;</button>
-          <input
-            type="text"
-            name=""
-            id=""
-            class="title-input"
-            placeholder="Title"
-          />
-          <input
-            type="text"
-            name=""
-            id=""
-            class="description-input"
-            placeholder="Description"
-          />
-          <input type="date" class="date-input" />
-          <button class="button-input">Add</button>
+          <form onsubmit="return false">
+            <input
+              type="text"
+              name=""
+              id=""
+              class="title-input"
+              placeholder="Title"
+              required
+            />
+            <input
+              type="text"
+              name=""
+              id=""
+              class="description-input"
+              placeholder="Description"
+            />
+            <input type="date" class="date-input" />
+            <!-- <button class="button-input">Add</button> -->
+            <input type="submit" id="submit" value="Add task" />
+          </form>
         </div>
       </div>
       <button class="trash">Trash</button>
@@ -52,5 +56,13 @@
       <div class="date-container"></div>
     </aside>
     <div class="overlay hidden"></div>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
   </body>
 </html>
