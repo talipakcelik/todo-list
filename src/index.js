@@ -16,7 +16,7 @@ const taskContainer = document.querySelector(".task-container");
 const titleInput = document.querySelector(".title-input");
 const descriptionInput = document.querySelector(".description-input");
 const dateInput = document.querySelector(".date-input");
-const buttonInput = document.querySelector(".button-input");
+const submit = document.querySelector("#submit");
 const section = document.querySelector("section");
 const main = document.querySelector("main");
 const menu = document.querySelector("menu");
@@ -31,16 +31,18 @@ const btnOpenModal = document.querySelector(".show-modal");
 
 let projectIndex = 0;
 
-buttonInput.addEventListener("click", function () {
-  pushTodoIntoArray();
-  loopTodoStore();
-  renderToScreen();
+submit.addEventListener("click", function () {
+  if (titleInput.value !== "") {
+    pushTodoIntoArray();
+    loopTodoStore();
+    renderToScreen();
+  }
 
   console.log(todoStore);
 });
 
 menu.addEventListener("click", function (e) {
-  if (e.target.textContent === "New") {
+  if (e.target.textContent === "New project") {
     projectAdd();
 
     if (!document.querySelector(".project-title")) {
@@ -62,23 +64,16 @@ menu.addEventListener("click", function (e) {
 });
 
 section.addEventListener("click", function (e) {
-  // if (e.target.textContent === "Projects") {
-  // }
-  if (e.target.classList.contains("add-project")) {
-    if (!document.querySelector(".project-title")) {
-    }
-  }
   if (e.target.textContent === "Home") {
     projectIndex = 0;
   }
   if (e.target.placeholder === "Untitled") {
     document.querySelector(".project-title").textContent =
-      e.target.value || "Untitled";
+      e.target.value || e.target.placeholder;
 
-    projectIndex = [...Array.from(e.target.parentElement.children)].indexOf(
-      e.target
-    );
-    console.log(projectIndex);
+    projectIndex = [
+      ...Array.from(e.target.parentElement.parentElement.children),
+    ].indexOf(e.target.parentElement);
   }
   const displayProject = document.querySelectorAll(".task-list");
   for (const element of displayProject) {
@@ -126,6 +121,24 @@ section.addEventListener("click", function (e) {
         element.parentElement.parentElement.style.display = "none";
       }
     }
+  }
+
+  if (e.target.name === "trash-outline") {
+    e.target.parentElement.parentElement.remove();
+
+    const displayProject = document.querySelectorAll(".task-list");
+    for (const element of displayProject) {
+      if (element.classList.contains(projectIndex)) {
+        element.remove();
+      }
+    }
+
+    todoStore.forEach(() => {
+      const foundIndex = todoStore.findIndex((el) => el.index === projectIndex);
+      if (foundIndex !== -1) {
+        todoStore.splice(foundIndex, 1);
+      }
+    });
   }
 });
 
