@@ -83,7 +83,16 @@ function renderToScreen() {
   ///
   const newDescription = document.createElement("p");
   newDescription.classList.add("task-description");
-  newDescription.textContent = `Description: ${descriptionInput.value}`;
+
+  console.log(typeof descriptionInput.value);
+  console.log(descriptionInput.value);
+  console.log(descriptionInput.value.length);
+
+  if (descriptionInput.value.length === 0) {
+    newDescription.textContent = `Description: unspecified`;
+  } else {
+    newDescription.textContent = `Description: ${descriptionInput.value}`;
+  }
 
   ///
   const date = document.createElement("input");
@@ -118,9 +127,12 @@ function renderToScreen() {
   descriptionContainer.append(newDescription);
 
   const parseDateInput = date.value.split("-");
-  console.log(parseDateInput);
 
-  dateContainer.textContent = `Due date: ${parseDateInput[2]}/${parseDateInput[1]}/${parseDateInput[0]}`;
+  if (parseDateInput.length === 1) {
+    dateContainer.textContent = `Due date: unspecified`;
+  } else {
+    dateContainer.textContent = `Due date: ${parseDateInput[2]}/${parseDateInput[1]}/${parseDateInput[0]}`;
+  }
 
   if (newDescription.previousSibling) {
     newDescription.previousSibling.remove();
@@ -155,19 +167,26 @@ function renderToScreen() {
 
   taskList.addEventListener("click", function (e) {
     if (e.target.getAttribute("class") !== "md hydrated") {
-      console.log(e.target.getAttribute("class"));
-      console.log(e.target);
       const found = todoStore.find(
         (el) => el.id === e.target.getAttribute("id")
       );
+
+      if (found.description.length === 0) {
+        document.querySelector(".task-description").textContent =
+          "Description: unspecified";
+      } else {
+        document.querySelector(
+          ".task-description"
+        ).textContent = `Description: ${found.description}`;
+      }
 
       const parseDate = e.target.lastChild.value.split("-");
 
       dateContainer.textContent = `Due date: ${parseDate[2]}/${parseDate[1]}/${parseDate[0]}`;
 
-      document.querySelector(
-        ".task-description"
-      ).textContent = `Description: ${found.description}`;
+      if (found.dueDate.length === 0) {
+        dateContainer.textContent = `Due date: unspecified`;
+      }
     }
   });
 }
