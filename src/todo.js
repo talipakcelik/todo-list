@@ -49,11 +49,19 @@ function loopTodoStore() {
 console.log(todoStore);
 
 function projectAdd() {
+  const projectCon = document.createElement("div");
+  projectCon.classList.add("project-sub-container");
+  projectContainer.append(projectCon);
   const newProject = document.createElement("input");
+
   newProject.placeholder = "Untitled";
   newProject.classList.add("new-project");
   newProject.setAttribute("id", `${self.crypto.randomUUID()}`);
-  projectContainer.append(newProject);
+  projectCon.append(newProject);
+
+  const delProject = document.createElement("span");
+  delProject.innerHTML = '<ion-icon name="trash-outline"></ion-icon>';
+  projectCon.append(delProject);
 }
 
 function renderToScreen() {
@@ -93,9 +101,9 @@ function renderToScreen() {
   check.setAttribute("id", `${taskId}`);
 
   ///
-  const deleteButton = document.createElement("button");
+  const deleteButton = document.createElement("span");
   deleteButton.classList.add("delete");
-  deleteButton.textContent = "delete";
+  deleteButton.innerHTML = '<ion-icon name="trash-outline"></ion-icon>';
   deleteButton.setAttribute("id", `${taskId}`);
   ////
 
@@ -119,7 +127,7 @@ function renderToScreen() {
   }
 
   deleteButton.addEventListener("click", function (e) {
-    e.target.parentElement.remove();
+    document.querySelector(".task-container").remove();
     const foundIndex = todoStore.findIndex(
       (el) => el.id === e.target.getAttribute("id")
     );
@@ -146,7 +154,9 @@ function renderToScreen() {
   });
 
   taskList.addEventListener("click", function (e) {
-    if (e.target.textContent !== "delete") {
+    if (e.target.getAttribute("class") !== "md hydrated") {
+      console.log(e.target.getAttribute("class"));
+      console.log(e.target);
       const found = todoStore.find(
         (el) => el.id === e.target.getAttribute("id")
       );
