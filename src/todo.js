@@ -65,11 +65,9 @@ function projectAdd() {
 
   projectCon.addEventListener("mouseover", function (e) {
     delProject.style.display = "";
-    console.log("ddd");
   });
   projectCon.addEventListener("mouseleave", function (e) {
     delProject.style.display = "none";
-    console.log("dddasfasf");
   });
 }
 
@@ -145,7 +143,7 @@ function renderToScreen() {
   }
 
   deleteButton.addEventListener("click", function (e) {
-    document.querySelector(".task-container").remove();
+    e.target.parentElement.parentElement.remove();
     const foundIndex = todoStore.findIndex(
       (el) => el.id === e.target.getAttribute("id")
     );
@@ -210,12 +208,14 @@ function renderToScreen() {
 }
 
 function openModal() {
-  modal.classList.remove("hidden");
+  modal.classList.add("active");
+  // modal.classList.remove("hidden");
   overlay.classList.remove("hidden");
 }
 
 function closeModal() {
-  modal.classList.add("hidden");
+  // modal.classList.add("hidden");
+  modal.classList.remove("active");
   overlay.classList.add("hidden");
 }
 
