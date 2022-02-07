@@ -4,15 +4,27 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="icon" href="example.svg" /> -->
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
-    <nav>Nav</nav>
+    <nav>
+      <div class="logo-container">
+        <img src="checkmark.svg" alt="todo logo" />
+        <h4>Todo List</h4>
+      </div>
+      <a
+        href="https://github.com/talipakcelik/todo-list"
+        target="_blank"
+        rel="noopener noreferrer"
+        ><ion-icon class="github-icon" name="logo-github"></ion-icon
+      ></a>
+    </nav>
     <menu>
-      <button>New project</button>
+      <button>New Project</button>
       <div>
-        <button class="show-modal">New task</button>
-        <div class="modal hidden">
+        <button class="show-modal">New Task</button>
+        <div class="modal transition">
           <button class="close-modal">&times;</button>
           <form onsubmit="return false">
             <input
@@ -43,11 +55,12 @@
       <div class="sidebar">Today</div>
       <div class="sidebar">This week</div>
       <div class="project-container">
-        <div class="sidebar">Projects</div>
+        <div class="projects">Projects</div>
       </div>
       <!-- <button class="add-project">Add Project</button> -->
     </section>
     <main>
+      <h3 class="project-title">Home</h3>
       <div class="task-list"></div>
     </main>
     <aside>
