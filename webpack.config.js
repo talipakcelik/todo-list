@@ -37,6 +37,7 @@ module.exports = {
       title: "todo-list",
       filename: "index.html",
       template: path.resolve(__dirname, "src/temp.html"),
+      favicon: "checkmark-done-outline.svg",
     }),
   ],
 };
