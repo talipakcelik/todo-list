@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import {
   titleInput,
-  taskList,
+  // taskList,
   projectContainer,
   projectIndex,
   modal,
@@ -10,6 +10,8 @@ import {
   descriptionContainer,
   dateInput,
   dateContainer,
+  taskListAll,
+  // todoStore,
 } from "./index.js";
 
 class todoCreator {
@@ -21,15 +23,101 @@ class todoCreator {
     this.dueDate = dueDate;
     this.id = self.crypto.randomUUID();
   }
+
   toggleCheck() {
     this.check = !this.check;
   }
 }
 
 let todoStore = [];
+
+if (localStorage.getItem("todos") !== null) {
+  todoStore = JSON.parse(localStorage.getItem("todos"));
+
+  let i = 0;
+  todoStore.forEach((el) => {
+    let projectIndex = 0;
+    let taskId = "";
+    console.log("dneme");
+
+    const main = document.querySelector("main");
+    const taskList = document.createElement("div");
+    taskList.classList.add(`task-list`);
+    taskList.classList.toggle(`${todoStore[i].index}`);
+
+    const taskContainer = document.createElement("div");
+    taskContainer.classList.add(`task-container`);
+    taskContainer.setAttribute("id", `${todoStore[i].id}`);
+
+    const newTask = document.createElement("p");
+    newTask.classList.add("task-title");
+    newTask.textContent = todoStore[i].title;
+    newTask.contentEditable = "true";
+
+    const newDescription = document.createElement("p");
+    newDescription.classList.add("task-description");
+
+    if (todoStore[i].description.length === 0) {
+      newDescription.textContent = `Description: unspecified`;
+    } else {
+      newDescription.textContent = `Description: ${todoStore[i].description}`;
+    }
+
+    const date = document.createElement("input");
+    date.classList.add("date");
+    date.type = "date";
+    date.classList.add("hidden");
+    date.value = todoStore[i].dueDate;
+    ///
+    const check = document.createElement("input");
+    check.type = "checkbox";
+    check.checked = todoStore[i].check;
+    check.classList.add("check");
+
+    ///
+    const deleteButton = document.createElement("span");
+    deleteButton.classList.add("delete");
+    deleteButton.innerHTML = '<ion-icon name="trash-outline"></ion-icon>';
+    deleteButton.style.display = "none";
+
+    main.append(taskList);
+
+    taskList.append(taskContainer);
+    taskContainer.append(check);
+    taskContainer.append(newTask);
+    taskContainer.append(deleteButton);
+    taskContainer.append(date);
+
+    const descriptionContainer = document.querySelector(
+      ".description-container"
+    );
+    const dateContainer = document.querySelector(".date-container");
+    descriptionContainer.append(newDescription);
+    const parseDateInput = date.value.split("-");
+
+    if (parseDateInput.length === 1) {
+      dateContainer.textContent = `Due date: unspecified`;
+    } else {
+      dateContainer.textContent = `Due date: ${parseDateInput[2]}/${parseDateInput[1]}/${parseDateInput[0]}`;
+    }
+
+    if (newDescription.previousSibling) {
+      newDescription.previousSibling.remove();
+    }
+
+    i++;
+  });
+} else {
+}
+const taskList = document.querySelector(".task-list");
+
 let taskId = "";
 
+console.log(todoStore);
+
 function pushTodoIntoArray() {
+  console.log(todoStore);
+
   const check = false;
   const title = titleInput.value;
   const description = descriptionInput.value;
@@ -38,6 +126,8 @@ function pushTodoIntoArray() {
 
   const newTodo = new todoCreator(check, title, description, index, dueDate);
   todoStore.push(newTodo);
+
+  localStorage.setItem("todos", JSON.stringify(todoStore));
 }
 
 function loopTodoStore() {
@@ -100,9 +190,7 @@ function renderToScreen() {
   ///
   const date = document.createElement("input");
   date.classList.add("date");
-  date.setAttribute("id", `${taskId}`);
   date.type = "date";
-  date.setAttribute("id", `${taskId}`);
   date.classList.add("hidden");
   date.value = dateInput.value;
   ///
@@ -110,13 +198,11 @@ function renderToScreen() {
   check.type = "checkbox";
   check.checked = false;
   check.classList.add("check");
-  check.setAttribute("id", `${taskId}`);
 
   ///
   const deleteButton = document.createElement("span");
   deleteButton.classList.add("delete");
   deleteButton.innerHTML = '<ion-icon name="trash-outline"></ion-icon>';
-  deleteButton.setAttribute("id", `${taskId}`);
   deleteButton.style.display = "none";
   ////
 
@@ -142,79 +228,95 @@ function renderToScreen() {
     newDescription.previousSibling.remove();
   }
 
-  deleteButton.addEventListener("click", function (e) {
-    e.target.parentElement.parentElement.remove();
-    const foundIndex = todoStore.findIndex(
-      (el) => el.id === e.target.getAttribute("id")
-    );
-    todoStore.splice(foundIndex, 1);
+  eventListenerForTasks();
+}
 
-    document.querySelector(".task-description").textContent = "";
-    dateContainer.textContent = "";
-  });
+function eventListenerForTasks() {
+  const taskListAll = document.querySelectorAll(".task-list");
+  //////////////////////////////////////////////////////////////
+  taskListAll.forEach((task) => {
+    task.addEventListener("mouseover", function (e) {
+      e.currentTarget.children[0].children[2].style.display = "";
+    });
+    //////////////////////////////////////////////////////////////
+    task.addEventListener("mouseleave", function (e) {
+      e.currentTarget.children[0].children[2].style.display = "none";
+    });
+    //////////////////////////////////////////////////////////////
+    task.addEventListener("click", function (e) {
+      //////////////////////////
+      /// for additional info///
+      //////////////////////////
+      if (e.target.getAttribute("class") !== "md hydrated") {
+        const found = todoStore.find(
+          (el) => el.id === e.currentTarget.children[0].getAttribute("id")
+        );
 
-  date.addEventListener("change", function (e) {
-    const found = todoStore.find((el) => el.id === e.target.getAttribute("id"));
-    found.dueDate = e.target.value;
-    console.log(found);
-  });
+        if (found.description.length === 0) {
+          document.querySelector(".task-description").textContent =
+            "Description: unspecified";
+        } else {
+          document.querySelector(
+            ".task-description"
+          ).textContent = `Description: ${found.description}`;
+        }
 
-  check.addEventListener("change", function (e) {
-    if (e.target.checked === false) {
-      newTask.style.textDecoration = "none";
-    } else if (e.target.checked === true) {
-      newTask.style.textDecoration = "line-through";
-    }
-    const found = todoStore.find((el) => el.id === e.target.getAttribute("id"));
-    found.toggleCheck();
-  });
+        const parseDate =
+          e.currentTarget.children[0].lastChild.value.split("-");
 
-  taskList.addEventListener("click", function (e) {
-    if (
-      e.target.getAttribute("class") !== "md hydrated" &&
-      e.target.getAttribute("class") !== "check" &&
-      e.target.getAttribute("class") !== "task-title"
-    ) {
-      const found = todoStore.find(
-        (el) => el.id === e.target.getAttribute("id")
-      );
+        dateContainer.textContent = `Due date: ${parseDate[2]}/${parseDate[1]}/${parseDate[0]}`;
 
-      if (found.description.length === 0) {
-        document.querySelector(".task-description").textContent =
-          "Description: unspecified";
-      } else {
-        document.querySelector(
-          ".task-description"
-        ).textContent = `Description: ${found.description}`;
+        if (found.dueDate.length === 0) {
+          dateContainer.textContent = `Due date: unspecified`;
+        }
+      }
+      ///////////////////////
+      /// for delete task///
+      //////////////////////
+      if (e.target.getAttribute("class") === "md hydrated") {
+        e.currentTarget.remove();
+        const foundIndex = todoStore.findIndex(
+          (el) => el.id === e.currentTarget.children[0].getAttribute("id")
+        );
+
+        todoStore.splice(foundIndex, 1);
+
+        document.querySelector(".task-description").textContent = "";
+        dateContainer.textContent = "";
+
+        localStorage.setItem("todos", JSON.stringify(todoStore));
       }
 
-      const parseDate = e.target.lastChild.value.split("-");
+      ////////////////////////
+      /// for checking box////
+      ////////////////////////
+      if (e.target.getAttribute("class") === "check") {
+        if (e.target.checked === false) {
+          e.currentTarget.children[0].children[1].style.textDecoration = "none";
+        } else if (e.target.checked === true) {
+          e.currentTarget.children[0].children[1].style.textDecoration =
+            "line-through";
+        }
+        const foundCheck = todoStore.find(
+          (el) => el.id === e.currentTarget.children[0].getAttribute("id")
+        );
 
-      dateContainer.textContent = `Due date: ${parseDate[2]}/${parseDate[1]}/${parseDate[0]}`;
+        foundCheck.check = !foundCheck.check;
 
-      if (found.dueDate.length === 0) {
-        dateContainer.textContent = `Due date: unspecified`;
+        localStorage.setItem("todos", JSON.stringify(todoStore));
       }
-    }
-  });
-
-  taskList.addEventListener("mouseover", function (e) {
-    deleteButton.style.display = "";
-  });
-
-  taskList.addEventListener("mouseleave", function (e) {
-    deleteButton.style.display = "none";
+    });
   });
 }
 
+eventListenerForTasks();
+
 function openModal() {
   modal.classList.add("active");
-  // modal.classList.remove("hidden");
   overlay.classList.remove("hidden");
 }
 
 function closeModal() {
-  // modal.classList.add("hidden");
   modal.classList.remove("active");
   overlay.classList.add("hidden");
 }
@@ -228,4 +330,5 @@ export {
   projectAdd,
   closeModal,
   openModal,
+  // eventListenerForTasks,
 };
