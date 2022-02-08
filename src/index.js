@@ -6,6 +6,7 @@ import {
   projectAdd,
   closeModal,
   openModal,
+  updatetodoStore,
 } from "./todo.js";
 import style from "./style.css";
 import { format, startOfWeek, endOfWeek, eachDayOfInterval } from "date-fns";
@@ -28,14 +29,8 @@ const btnOpenModal = document.querySelector(".show-modal");
 const projectTitle = document.querySelector(".project-title");
 const trash = document.querySelector(".trash");
 
-// const starterConditions = function () {
-//   const todos = localStorage.getItem("todos", JSON.stringify());
-//   if (!todos) {
-//     localStorage.setItem("todos", JSON.stringify());
-//   }
-// };
-
 let projectIndex = 0;
+let todoStoreNew = [];
 
 submit.addEventListener("click", function () {
   if (titleInput.value !== "") {
@@ -71,6 +66,8 @@ section.addEventListener("click", function (e) {
     projectIndex = [
       ...Array.from(e.target.parentElement.parentElement.children),
     ].indexOf(e.target.parentElement);
+
+    // todoStore.find(el => {el.index})
 
     const allProject = document.querySelectorAll(".new-project");
     allProject.forEach((project) => {
@@ -130,7 +127,7 @@ section.addEventListener("click", function (e) {
   }
 
   if (e.target.name === "trash-outline") {
-    e.target.parentElement.parentElement.remove();
+    e.target.parentElement.parentElement.style.display = "none";
 
     const displayProject = document.querySelectorAll(".task-list");
     for (const element of displayProject) {
@@ -139,15 +136,13 @@ section.addEventListener("click", function (e) {
       }
     }
 
-    todoStore.forEach(() => {
-      const foundIndex = todoStore.findIndex((el) => el.index === projectIndex);
-      if (foundIndex !== -1) {
-        todoStore.splice(foundIndex, 1);
-      }
-    });
+    updatetodoStore();
+    console.log(projectIndex);
+    console.log(todoStore);
 
     document.querySelector(".project-title").textContent = "";
   }
+  localStorage.setItem("todos", JSON.stringify(todoStore));
 });
 
 btnOpenModal.addEventListener("click", openModal);
@@ -178,7 +173,7 @@ trash.addEventListener("click", function () {
 
   // because of todoStore in another module, it was not possible to edit the todostore
   // needed to create a new array
-  let todoStoreNew = [];
+
   todoStoreNew = todoStore.filter((el) => el.check !== true);
   localStorage.setItem("todos", JSON.stringify(todoStoreNew));
 });
