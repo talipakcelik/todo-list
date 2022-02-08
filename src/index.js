@@ -10,7 +10,7 @@ import {
 import style from "./style.css";
 import { format, startOfWeek, endOfWeek, eachDayOfInterval } from "date-fns";
 
-const taskList = document.querySelector(".task-list");
+const taskListAll = document.querySelectorAll(".task-list");
 const titleInput = document.querySelector(".title-input");
 const descriptionInput = document.querySelector(".description-input");
 const dateInput = document.querySelector(".date-input");
@@ -28,6 +28,13 @@ const btnOpenModal = document.querySelector(".show-modal");
 const projectTitle = document.querySelector(".project-title");
 const trash = document.querySelector(".trash");
 
+// const starterConditions = function () {
+//   const todos = localStorage.getItem("todos", JSON.stringify());
+//   if (!todos) {
+//     localStorage.setItem("todos", JSON.stringify());
+//   }
+// };
+
 let projectIndex = 0;
 
 submit.addEventListener("click", function () {
@@ -36,7 +43,6 @@ submit.addEventListener("click", function () {
     loopTodoStore();
     renderToScreen();
   }
-
   console.log(todoStore);
 });
 
@@ -68,7 +74,7 @@ section.addEventListener("click", function (e) {
 
     const allProject = document.querySelectorAll(".new-project");
     allProject.forEach((project) => {
-      project.addEventListener("change", function (e) {
+      project.addEventListener("input", function (e) {
         projectTitle.textContent = e.target.value;
       });
     });
@@ -170,16 +176,14 @@ trash.addEventListener("click", function () {
     );
   }
 
-  todoStore.forEach(() => {
-    const foundIndex = todoStore.findIndex((el) => el.check === true);
-    if (foundIndex !== -1) {
-      todoStore.splice(foundIndex, 1);
-    }
-  });
+  // because of todoStore in another module, it was not possible to edit the todostore
+  // needed to create a new array
+  let todoStoreNew = [];
+  todoStoreNew = todoStore.filter((el) => el.check !== true);
+  localStorage.setItem("todos", JSON.stringify(todoStoreNew));
 });
 
 export {
-  taskList,
   titleInput,
   projectContainer,
   projectIndex,
@@ -190,4 +194,5 @@ export {
   descriptionContainer,
   dateInput,
   dateContainer,
+  taskListAll,
 };
