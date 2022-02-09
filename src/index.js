@@ -8,8 +8,8 @@ import {
   openModal,
   updatetodoStore,
   numberOfProjectsReducer,
-  // maxIndexValueReduce,
-  // updateProjectName,
+  pushProjectIntoArray,
+  projectStore,
 } from "./todo.js";
 import style from "./style.css";
 import { format, startOfWeek, endOfWeek, eachDayOfInterval } from "date-fns";
@@ -46,6 +46,8 @@ submit.addEventListener("click", function () {
 
 menu.addEventListener("click", function (e) {
   if (e.target.textContent === "New Project") {
+    pushProjectIntoArray();
+    console.log(projectStore);
     projectAdd();
 
     if (!document.querySelector(".project-title")) {
@@ -66,9 +68,9 @@ section.addEventListener("click", function (e) {
   if (e.target.placeholder === "Untitled") {
     document.querySelector(".project-title").textContent =
       e.target.value || e.target.placeholder;
-    projectIndex = [
-      ...Array.from(e.target.parentElement.parentElement.children),
-    ].indexOf(e.target.parentElement);
+
+    console.log(e.target.getAttribute("id"));
+    projectIndex = e.target.getAttribute("id");
 
     // todoStore.find(el => {el.index})
 
@@ -153,14 +155,28 @@ section.addEventListener("click", function (e) {
 
     document.querySelector(".project-title").textContent = "";
 
-    // maxIndexValueReduce();
     numberOfProjectsReducer();
     if (localStorage.getItem("todos") !== null) {
       localStorage.setItem("todos", JSON.stringify(todoStore));
     }
-  }
 
-  console.log(projectIndex);
+    const foundProject = projectStore.findIndex(
+      (el) =>
+        el.index ===
+        Number(
+          e.target.parentElement.parentElement.children[0].getAttribute("id")
+        )
+    );
+
+    projectStore.splice(foundProject, 1);
+    console.log(
+      e.target.parentElement.parentElement.children[0].getAttribute("id")
+    );
+    console.log(foundProject);
+
+    localStorage.setItem("projects", JSON.stringify(projectStore));
+    console.log(projectStore);
+  }
 });
 
 btnOpenModal.addEventListener("click", openModal);
