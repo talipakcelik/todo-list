@@ -4,11 +4,90 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="icon" href="example.svg" /> -->
     <title>todo-list</title>
-  <script defer src="runtime.d8bd068fd826bcc314b2.js"></script><script defer src="index.00a2601e4d0330e37698.js"></script></head>
+  <link rel="icon" href="checkmark.svg"><script defer src="runtime.739461a76bd2af3f0544.js"></script><script defer src="index.b2da3d00be2b31917930.js"></script></head>
   <body>
-    <header>
-      <h1>todo-list</h1>
-    </header>
+    <nav>
+      <div class="logo-container">
+        <img src="checkmark.svg" alt="todo logo" />
+        <h4>Todo List</h4>
+      </div>
+      <a
+        href="https://github.com/talipakcelik/todo-list"
+        target="_blank"
+        rel="noopener noreferrer"
+        ><ion-icon class="github-icon" name="logo-github"></ion-icon
+      ></a>
+    </nav>
+    <menu>
+      <button>New Project</button>
+      <div>
+        <button class="show-modal">New Task</button>
+        <div class="modal transition">
+          <button class="close-modal">&times;</button>
+          <form onsubmit="return false">
+            <input
+              type="text"
+              name=""
+              id=""
+              class="title-input"
+              placeholder="Title"
+              required
+            />
+            <input
+              type="text"
+              name=""
+              id=""
+              class="description-input"
+              placeholder="Description"
+            />
+            <input
+              type="text"
+              class="date-input"
+              placeholder="Due Date"
+              onfocus="(this.type='date')"
+              onblur="(this.type='text')"
+            />
+            <!-- <button class="button-input">Add</button> -->
+            <input type="submit" id="submit" value="Add task" />
+          </form>
+        </div>
+      </div>
+      <button class="trash">Trash</button>
+    </menu>
+    <section>
+      <div class="sidebar">Home</div>
+      <div class="sidebar">Today</div>
+      <div class="sidebar">This week</div>
+      <div class="project-container">
+        <h3 class="projects">Projects &nbsp;</h3>
+      </div>
+      <!-- <button class="add-project">Add Project</button> -->
+    </section>
+    <main>
+      <h3 class="project-title">Home</h3>
+      <div class="task-list"></div>
+    </main>
+    <aside>
+      <h3>Additional Info</h3>
+      <div class="description-container">
+        <div class="description-1">Description:&nbsp;</div>
+        <div class="description-2"></div>
+      </div>
+      <div class="date-container">
+        <div class="date-1">Due Date:&nbsp;</div>
+        <div class="date-2"></div>
+      </div>
+    </aside>
+    <div class="overlay hidden"></div>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
   </body>
 </html>
