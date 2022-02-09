@@ -5,9 +5,7 @@ import {
   modal,
   overlay,
   descriptionInput,
-  descriptionContainer,
   dateInput,
-  dateContainer,
 } from "./index.js";
 
 class todoCreator {
@@ -38,8 +36,6 @@ let todoStore = [];
 let projectStore = [];
 
 function pushTodoIntoArray() {
-  console.log(todoStore);
-
   const check = false;
   const title = titleInput.value;
   const description = descriptionInput.value;
@@ -61,18 +57,20 @@ function pushTodoIntoArray() {
 }
 
 let indexOfProject;
-
 let k = 0;
+
 function pushProjectIntoArray() {
   indexOfProject++;
 
   const index = indexOfProject;
-  const newProject = new projectCreator(index);
+  const title = "";
+  const newProject = new projectCreator(index, title);
 
   projectStore.push(newProject);
 
   localStorage.setItem("projects", JSON.stringify(projectStore));
   localStorage.setItem("indexOfProject", JSON.stringify(indexOfProject));
+  localStorage.setItem("todos", JSON.stringify(todoStore));
 }
 
 function loopTodoStore() {
@@ -81,7 +79,6 @@ function loopTodoStore() {
 }
 
 indexOfProject = JSON.parse(localStorage.getItem("indexOfProject"));
-console.log(indexOfProject, projectStore);
 
 if (localStorage.getItem("projects") !== null) {
   projectStore = JSON.parse(localStorage.getItem("projects"));
@@ -89,9 +86,6 @@ if (localStorage.getItem("projects") !== null) {
 if (localStorage.getItem("todos") !== null) {
   todoStore = JSON.parse(localStorage.getItem("todos"));
 
-  console.log(projectStore);
-
-  console.log(todoStore);
   let i = 0;
   todoStore.forEach((el) => {
     const main = document.querySelector("main");
@@ -112,13 +106,15 @@ if (localStorage.getItem("todos") !== null) {
 
     newTask.contentEditable = "true";
 
-    const newDescription = document.createElement("p");
-    newDescription.classList.add("task-description");
+    // const newDescription = document.createElement("p");
+    // newDescription.classList.add("task-description");
 
     if (todoStore[i].description.length === 0) {
-      newDescription.textContent = `Description: unspecified`;
+      document.querySelector(".description-2").textContent = ` unspecified`;
     } else {
-      newDescription.textContent = `Description: ${todoStore[i].description}`;
+      document.querySelector(
+        ".description-2"
+      ).textContent = ` ${todoStore[i].description}`;
     }
 
     const date = document.createElement("input");
@@ -149,18 +145,20 @@ if (localStorage.getItem("todos") !== null) {
       ".description-container"
     );
     const dateContainer = document.querySelector(".date-container");
-    descriptionContainer.append(newDescription);
+    // descriptionContainer.append(newDescription);
     const parseDateInput = date.value.split("-");
 
     if (parseDateInput.length === 1) {
-      dateContainer.textContent = `Due date: unspecified`;
+      document.querySelector(".date-2").textContent = ` unspecified`;
     } else {
-      dateContainer.textContent = `Due date: ${parseDateInput[2]}/${parseDateInput[1]}/${parseDateInput[0]}`;
+      document.querySelector(
+        ".date-2"
+      ).textContent = ` ${parseDateInput[2]}/${parseDateInput[1]}/${parseDateInput[0]}`;
     }
 
-    if (newDescription.previousSibling) {
-      newDescription.previousSibling.remove();
-    }
+    // if (newDescription.previousSibling) {
+    //   newDescription.previousSibling.remove();
+    // }
 
     const displayProject = document.querySelectorAll(".task-list");
     for (const element of displayProject) {
@@ -175,7 +173,6 @@ if (localStorage.getItem("todos") !== null) {
   });
 
   let numberOfProjects = localStorage.getItem("numberOfProjects");
-  console.log("dede", numberOfProjects);
   for (let z = 1; z <= numberOfProjects; z++) {
     const projectCon = document.createElement("div");
     projectCon.classList.add("project-sub-container");
@@ -186,7 +183,7 @@ if (localStorage.getItem("todos") !== null) {
     newProject.classList.add("new-project");
     newProject.setAttribute("id", `${projectStore[k].index}`);
 
-    newProject.value = "proje";
+    newProject.value = `${projectStore[k].title}`;
     projectCon.append(newProject);
 
     const delProject = document.createElement("span");
@@ -214,7 +211,6 @@ function projectAdd() {
   projectCon.classList.add("project-sub-container");
   document.querySelector(".project-container").append(projectCon);
 
-  console.log(projectStore);
   const newProject = document.createElement("input");
   newProject.placeholder = "Untitled";
   newProject.classList.add("new-project");
@@ -236,7 +232,6 @@ function projectAdd() {
 
   numberOfProjects++;
   localStorage.setItem("numberOfProjects", numberOfProjects);
-  console.log(numberOfProjects);
 
   k++;
 }
@@ -258,13 +253,13 @@ function renderToScreen() {
   newTask.textContent = titleInput.value;
   newTask.contentEditable = "true";
   ///
-  const newDescription = document.createElement("p");
-  newDescription.classList.add("task-description");
 
   if (descriptionInput.value.length === 0) {
-    newDescription.textContent = `Description: unspecified`;
+    document.querySelector(".description-2").textContent = ` unspecified`;
   } else {
-    newDescription.textContent = `Description: ${descriptionInput.value}`;
+    document.querySelector(
+      ".description-2"
+    ).textContent = ` ${descriptionInput.value}`;
   }
 
   ///
@@ -294,19 +289,21 @@ function renderToScreen() {
   taskContainer.append(deleteButton);
   taskContainer.append(date);
 
-  descriptionContainer.append(newDescription);
+  // descriptionContainer.append(newDescription);
 
   const parseDateInput = date.value.split("-");
 
   if (parseDateInput.length === 1) {
-    dateContainer.textContent = `Due date: unspecified`;
+    document.querySelector(".date-2").textContent = ` unspecified`;
   } else {
-    dateContainer.textContent = `Due date: ${parseDateInput[2]}/${parseDateInput[1]}/${parseDateInput[0]}`;
+    document.querySelector(
+      ".date-2"
+    ).textContent = ` ${parseDateInput[2]}/${parseDateInput[1]}/${parseDateInput[0]}`;
   }
 
-  if (newDescription.previousSibling) {
-    newDescription.previousSibling.remove();
-  }
+  // if (newDescription.previousSibling) {
+  //   newDescription.previousSibling.remove();
+  // }
 
   eventListenerForTasks();
 }
@@ -333,21 +330,22 @@ function eventListenerForTasks() {
         );
 
         if (found.description.length === 0) {
-          document.querySelector(".task-description").textContent =
-            "Description: unspecified";
+          document.querySelector(".description-2").textContent = " unspecified";
         } else {
           document.querySelector(
-            ".task-description"
-          ).textContent = `Description: ${found.description}`;
+            ".description-2"
+          ).textContent = ` ${found.description}`;
         }
 
         const parseDate =
           e.currentTarget.children[0].lastChild.value.split("-");
 
-        dateContainer.textContent = `Due date: ${parseDate[2]}/${parseDate[1]}/${parseDate[0]}`;
+        document.querySelector(
+          ".date-2"
+        ).textContent = ` ${parseDate[2]}/${parseDate[1]}/${parseDate[0]}`;
 
         if (found.dueDate.length === 0) {
-          dateContainer.textContent = `Due date: unspecified`;
+          document.querySelector(".date-2").textContent = ` unspecified`;
         }
       }
       ///////////////////////
@@ -361,8 +359,8 @@ function eventListenerForTasks() {
 
         todoStore.splice(foundIndex, 1);
 
-        document.querySelector(".task-description").textContent = "";
-        dateContainer.textContent = "";
+        document.querySelector(".description-2").textContent = " ";
+        document.querySelector(".date-2").textContent = " ";
 
         localStorage.setItem("todos", JSON.stringify(todoStore));
       }
@@ -382,9 +380,8 @@ function eventListenerForTasks() {
         );
 
         foundCheck.check = !foundCheck.check;
-
-        localStorage.setItem("todos", JSON.stringify(todoStore));
       }
+      localStorage.setItem("todos", JSON.stringify(todoStore));
     });
   });
 }
