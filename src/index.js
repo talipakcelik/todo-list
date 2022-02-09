@@ -41,13 +41,11 @@ submit.addEventListener("click", function () {
     loopTodoStore();
     renderToScreen();
   }
-  console.log(todoStore);
 });
 
 menu.addEventListener("click", function (e) {
   if (e.target.textContent === "New Project") {
     pushProjectIntoArray();
-    console.log(projectStore);
     projectAdd();
 
     if (!document.querySelector(".project-title")) {
@@ -69,22 +67,19 @@ section.addEventListener("click", function (e) {
     document.querySelector(".project-title").textContent =
       e.target.value || e.target.placeholder;
 
-    console.log(e.target.getAttribute("id"));
     projectIndex = e.target.getAttribute("id");
-
-    // todoStore.find(el => {el.index})
 
     const allProject = document.querySelectorAll(".new-project");
     allProject.forEach((project) => {
       project.addEventListener("input", function (e) {
         projectTitle.textContent = e.target.value;
-        todoStore.forEach((el) => {
-          if (el.index === projectIndex) {
-            el.projectName = e.target.value;
+        projectStore.forEach((el) => {
+          if (el.index === Number(projectIndex)) {
+            el.title = e.target.value;
           }
         });
         localStorage.setItem("todos", JSON.stringify(todoStore));
-        // updateProjectName();
+        localStorage.setItem("projects", JSON.stringify(projectStore));
       });
     });
   }
@@ -149,9 +144,10 @@ section.addEventListener("click", function (e) {
       }
     }
 
+    projectIndex =
+      e.target.parentElement.parentElement.children[0].getAttribute("id");
+
     updatetodoStore();
-    console.log(projectIndex);
-    console.log(todoStore);
 
     document.querySelector(".project-title").textContent = "";
 
@@ -169,13 +165,8 @@ section.addEventListener("click", function (e) {
     );
 
     projectStore.splice(foundProject, 1);
-    console.log(
-      e.target.parentElement.parentElement.children[0].getAttribute("id")
-    );
-    console.log(foundProject);
 
     localStorage.setItem("projects", JSON.stringify(projectStore));
-    console.log(projectStore);
   }
 });
 
