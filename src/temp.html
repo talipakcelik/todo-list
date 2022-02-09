@@ -42,7 +42,13 @@
               class="description-input"
               placeholder="Description"
             />
-            <input type="date" class="date-input" />
+            <input
+              type="text"
+              class="date-input"
+              placeholder="Due Date"
+              onfocus="(this.type='date')"
+              onblur="(this.type='text')"
+            />
             <!-- <button class="button-input">Add</button> -->
             <input type="submit" id="submit" value="Add task" />
           </form>
