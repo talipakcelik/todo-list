@@ -34,16 +34,13 @@ nav {
   align-items: center;
   background-color: #23272a;
   grid-row: 1 / -1;
-  /* color: white; */
 }
 
 img {
   width: 100%;
-  /* background-color: #5470b0; */
   border-radius: 6px;
-  /* filter: brightness(120%); */
-  filter: invert(55%) sepia(17%) saturate(4329%) hue-rotate(203deg)
-    brightness(96%) contrast(77%);
+  filter: invert(66%) sepia(22%) saturate(5331%) hue-rotate(199deg)
+    brightness(88%) contrast(93%);
 
   display: block;
 }
@@ -53,11 +50,11 @@ img {
   cursor: pointer;
 }
 
-.logo-container:hover {
-  filter: invert(73%) sepia(23%) saturate(2470%) hue-rotate(347deg)
-    brightness(101%) contrast(96%);
+.logo-container:hover,
+a:hover {
+  filter: invert(42%) sepia(91%) saturate(918%) hue-rotate(346deg)
+    brightness(93%) contrast(98%);
   transition: all 5s ease-in-out;
-  /* animation: expand 1s ease-in; */
 }
 
 h4 {
@@ -77,7 +74,6 @@ a {
 }
 
 menu {
-  /* background-color: #2c2f33; */
   grid-column: 2 / -1;
   display: flex;
   align-items: center;
@@ -119,16 +115,6 @@ main {
   border-right: 3px solid hsla(50, 42%, 48%, 1);
 }
 
-/* ::-webkit-scrollbar {
-  width: 0.5em;
-  height: 0.5em;
-} */
-
-/* ::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-} */
-
 ::-webkit-scrollbar-thumb {
   color: hsla(216, 7%, 14%, 1);
 }
@@ -152,15 +138,12 @@ button {
   display: inline-block;
   font-size: 1.6rem;
   background-color: hsla(216, 7%, 14%, 1);
-  /* border: none; */
   cursor: pointer;
   font-family: inherit;
   font-size: inherit;
   color: inherit;
   padding: 0.8rem 1.2rem;
-  /* font-weight: bold; */
   border-radius: 6px;
-  /* border: 2px solid #ae9d47; */
   border: none;
 }
 
@@ -170,13 +153,13 @@ button:hover {
 }
 
 .trash {
-  background-color: hsl(0, 85%, 61%);
+  background-color: hsla(216, 7%, 14%, 1);
   margin-right: 8rem;
-  /* margin-left: auto; */
 }
 
 .trash:hover {
   background-color: hsla(0, 66%, 55%, 1);
+  color: #222;
 }
 
 .sidebar {
@@ -201,7 +184,6 @@ button:hover {
   text-align: left;
   margin-left: 2rem;
   margin: 0 0 2rem 2rem;
-  color: hsl(233, 45%, 69%);
 }
 
 .project-container {
@@ -239,26 +221,20 @@ button:hover {
   color: inherit;
   background-color: #23272a;
   transition: all 0.3s ease-in;
-
-  /* outline: none; */
-}
-
-.new-project::placeholder {
-  /* background-color: #fff; */
 }
 
 .new-project:active,
 .new-project:focus {
-  /* outline: none; */
   background-color: hsla(216, 7%, 14%, 0.7);
   outline-color: hsla(153, 46%, 49%, 1);
   outline-style: double;
 }
 
 .projects {
-  margin-right: 8rem;
-  text-decoration: underline hsl(37, 65%, 63%);
-  /* line-height: 1.; */
+  margin-right: auto;
+  text-decoration: overline hsla(50, 42%, 48%, 1);
+  color: hsl(233, 45%, 69%);
+  word-spacing: 2.9rem;
 }
 
 ion-icon {
@@ -273,15 +249,10 @@ ion-icon:hover {
 
 .task-list {
   cursor: pointer;
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* align-items: center; */
 }
 
 .task-container {
   display: flex;
-  /* flex-direction: row; */
-  /* gap: 5rem; */
   align-items: center;
   width: 100%;
   justify-content: space-between;
@@ -290,14 +261,10 @@ ion-icon:hover {
 .task-list:hover {
   background-color: hsla(216, 7%, 14%, 0.7);
   border-radius: 6px;
-
-  /* margin: 0 2rem 0 2rem; */
-  /* width: 80%; */
 }
 
 .task-title:active,
 .task-title:focus {
-  /* outline: none; */
   background-color: hsla(216, 7%, 14%, 0.7);
   outline-color: hsla(153, 46%, 49%, 1);
   outline-style: double;
@@ -306,14 +273,8 @@ ion-icon:hover {
 }
 
 .delete {
-  /* margin-left: auto; */
   margin-right: 2rem;
 }
-
-/* .date {
-  margin-left: auto;
-  margin-right: 2rem;
-} */
 
 .task-title {
   margin-right: auto;
@@ -429,6 +390,33 @@ form {
   outline-style: double;
 }
 
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 0;
+  cursor: pointer;
+  background-color: hsla(220, 8%, 23%, 1);
+  border: 1px solid hsla(0, 0%, 61%, 1);
+  border-radius: 3px;
+  width: 2rem;
+  height: 2rem;
+}
+
+input[type="checkbox"]:focus,
+input[type="checkbox"]:hover {
+  outline: 0;
+  border-color: hsla(0, 0%, 61%, 1);
+}
+
+input[type="checkbox"]:checked {
+  background-color: hsla(227, 58%, 65%, 1) !important;
+  border: 1px solid hsla(227, 58%, 65%, 1);
+  background-position: center;
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' aria-hidden='true' focusable='false' width='1em' height='1em' style='-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);' preserveAspectRatio='xMidYMid meet' viewBox='0 0 20 20'%3E%3Cpath d='M0 11l2-2l5 5L18 3l2 2L7 18z' fill='%23fff'/%3E%3C/svg%3E");
+}
+
 .overlay {
   position: absolute;
   top: 0;
@@ -445,12 +433,29 @@ form {
   /* caret-color: red; */
 }
 
+h3 {
+  text-decoration: underline hsla(50, 42%, 48%, 1);
+  font-weight: 500;
+  color: hsl(233, 45%, 69%);
+}
+
 .task-description,
-.date-container {
+.date-container,
+.description-container {
+  display: flex;
   text-align: left;
   padding: 1rem;
   overflow-wrap: break-word;
   font-weight: 400;
+}
+.date-1,
+.description-1 {
+  /* text-decoration: underline hsla(50, 42%, 48%, 1); */
+}
+
+.date-2,
+.description-2 {
+  color: hsla(213, 3%, 82%, 1);
 }
 
 .transition {
