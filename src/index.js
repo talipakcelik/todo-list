@@ -7,6 +7,9 @@ import {
   closeModal,
   openModal,
   updatetodoStore,
+  numberOfProjectsReducer,
+  // maxIndexValueReduce,
+  // updateProjectName,
 } from "./todo.js";
 import style from "./style.css";
 import { format, startOfWeek, endOfWeek, eachDayOfInterval } from "date-fns";
@@ -73,6 +76,13 @@ section.addEventListener("click", function (e) {
     allProject.forEach((project) => {
       project.addEventListener("input", function (e) {
         projectTitle.textContent = e.target.value;
+        todoStore.forEach((el) => {
+          if (el.index === projectIndex) {
+            el.projectName = e.target.value;
+          }
+        });
+        localStorage.setItem("todos", JSON.stringify(todoStore));
+        // updateProjectName();
       });
     });
   }
@@ -128,6 +138,7 @@ section.addEventListener("click", function (e) {
 
   if (e.target.name === "trash-outline") {
     e.target.parentElement.parentElement.style.display = "none";
+    // e.target.parentElement.parentElement.remove();
 
     const displayProject = document.querySelectorAll(".task-list");
     for (const element of displayProject) {
@@ -141,8 +152,15 @@ section.addEventListener("click", function (e) {
     console.log(todoStore);
 
     document.querySelector(".project-title").textContent = "";
+
+    // maxIndexValueReduce();
+    numberOfProjectsReducer();
+    if (localStorage.getItem("todos") !== null) {
+      localStorage.setItem("todos", JSON.stringify(todoStore));
+    }
   }
-  localStorage.setItem("todos", JSON.stringify(todoStore));
+
+  console.log(projectIndex);
 });
 
 btnOpenModal.addEventListener("click", openModal);

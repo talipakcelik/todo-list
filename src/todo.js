@@ -1,7 +1,6 @@
-import { format } from "date-fns";
+import { el } from "date-fns/locale";
 import {
   titleInput,
-  // taskList,
   projectContainer,
   projectIndex,
   modal,
@@ -11,17 +10,17 @@ import {
   dateInput,
   dateContainer,
   taskListAll,
-  // todoStore,
 } from "./index.js";
 
 class todoCreator {
-  constructor(check, title, description, index, dueDate) {
+  constructor(check, title, description, index, dueDate, projectName) {
     this.check = check;
     this.title = title;
     this.description = description;
     this.index = index;
     this.dueDate = dueDate;
     this.id = self.crypto.randomUUID();
+    this.projectName = projectName;
   }
 
   toggleCheck() {
@@ -29,17 +28,46 @@ class todoCreator {
   }
 }
 
+let taskId = "";
 let todoStore = [];
+
+function pushTodoIntoArray() {
+  console.log(todoStore);
+
+  const check = false;
+  const title = titleInput.value;
+  const description = descriptionInput.value;
+  const index = projectIndex;
+  const dueDate = dateInput.value;
+  // const projectName = newProject.value;
+
+  const newTodo = new todoCreator(
+    check,
+    title,
+    description,
+    index,
+    dueDate
+    // projectName
+  );
+  todoStore.push(newTodo);
+
+  localStorage.setItem("todos", JSON.stringify(todoStore));
+}
+
+function loopTodoStore() {
+  const values = Object.values(todoStore);
+  for (const { id } of values) taskId = id;
+}
+
+// let maxIndexValue;
+// console.log(maxIndexValue);
 
 if (localStorage.getItem("todos") !== null) {
   todoStore = JSON.parse(localStorage.getItem("todos"));
 
+  console.log(todoStore);
   let i = 0;
   todoStore.forEach((el) => {
-    let projectIndex = 0;
-    let taskId = "";
-    console.log("dneme");
-
     const main = document.querySelector("main");
     const taskList = document.createElement("div");
     taskList.classList.add(`task-list`);
@@ -52,6 +80,10 @@ if (localStorage.getItem("todos") !== null) {
     const newTask = document.createElement("p");
     newTask.classList.add("task-title");
     newTask.textContent = todoStore[i].title;
+    if (todoStore[i].check === true) {
+      newTask.style.textDecoration = "line-through";
+    }
+
     newTask.contentEditable = "true";
 
     const newDescription = document.createElement("p");
@@ -74,7 +106,6 @@ if (localStorage.getItem("todos") !== null) {
     check.checked = todoStore[i].check;
     check.classList.add("check");
 
-    ///
     const deleteButton = document.createElement("span");
     deleteButton.classList.add("delete");
     deleteButton.innerHTML = '<ion-icon name="trash-outline"></ion-icon>';
@@ -105,47 +136,109 @@ if (localStorage.getItem("todos") !== null) {
       newDescription.previousSibling.remove();
     }
 
+    const displayProject = document.querySelectorAll(".task-list");
+    for (const element of displayProject) {
+      if (element.classList.contains(0)) {
+        element.style.display = "";
+      } else {
+        element.style.display = "none";
+      }
+
+      // if (!element.classList.contains(projectIndex)) {
+      //   element.style.display = "none";
+      // } else if (element.classList.contains(projectIndex)) {
+      //   element.style.display = "";
+      // }
+    }
+
     i++;
   });
-} else {
+
+  // if (localStorage.getItem("maxIndexValue") === null) {
+  //   maxIndexValue = Math.max.apply(
+  //     Math,
+  //     todoStore.map(function (el) {
+  //       return el.index;
+  //     })
+  //   );
+  // } else {
+  //   maxIndexValue = localStorage.getItem("maxIndexValue");
+  // }
+
+  // localStorage.setItem("maxIndexValue", maxIndexValue);
+
+  // let foundProject = el.index !== 0;
+
+  // console.log(maxIndexValue);
+
+  // for (let z = 1; z <= maxIndexValue; z++) {
+  // if (foundProject !== false) {
+
+  let numberOfProjects = localStorage.getItem("numberOfProjects");
+  console.log("dede", numberOfProjects);
+  for (let z = 1; z <= numberOfProjects; z++) {
+    const projectCon = document.createElement("div");
+    projectCon.classList.add("project-sub-container");
+    document.querySelector(".project-container").append(projectCon);
+
+    const newProject = document.createElement("input");
+    newProject.placeholder = "Untitled";
+    newProject.classList.add("new-project");
+    newProject.setAttribute("id", `${self.crypto.randomUUID()}`);
+    // newProject.value = todoStore.find((el) => {
+    //   el.index === projectIndex;
+    // });
+    newProject.value = "proje";
+    projectCon.append(newProject);
+
+    const delProject = document.createElement("span");
+    delProject.innerHTML = '<ion-icon name="trash-outline"></ion-icon>';
+    projectCon.append(delProject);
+    delProject.style.display = "none";
+
+    projectCon.addEventListener("mouseover", function (e) {
+      delProject.style.display = "";
+    });
+    projectCon.addEventListener("mouseleave", function (e) {
+      delProject.style.display = "none";
+    });
+    if (el.index === i) {
+      newProject.value = el.projectName;
+    }
+  }
+  // }
+  // }
 }
-const taskList = document.querySelector(".task-list");
+// else {
+// }
 
-let taskId = "";
-
-console.log(todoStore);
-
-function pushTodoIntoArray() {
-  console.log(todoStore);
-
-  const check = false;
-  const title = titleInput.value;
-  const description = descriptionInput.value;
-  const index = projectIndex;
-  const dueDate = dateInput.value;
-
-  const newTodo = new todoCreator(check, title, description, index, dueDate);
-  todoStore.push(newTodo);
-
-  localStorage.setItem("todos", JSON.stringify(todoStore));
+function maxIndexValueReduce() {
+  maxIndexValue--;
+  console.log(maxIndexValue);
+  localStorage.setItem("maxIndexValue", maxIndexValue);
 }
 
-function loopTodoStore() {
-  const values = Object.values(todoStore);
-  for (const { id } of values) taskId = id;
-}
+// console.log(foundProject);
+// if (localStorage.getItem("numberOfProjects") !== 0) {
+//   let numberOfProjects = localStorage.getItem("numberOfProjects");
+// } else {
+// }
 
-console.log(todoStore);
+let numberOfProjects = localStorage.getItem("numberOfProjects");
+// localStorage.setItem("numberOfProjects", numberOfProjects);
 
 function projectAdd() {
   const projectCon = document.createElement("div");
   projectCon.classList.add("project-sub-container");
-  projectContainer.append(projectCon);
-  const newProject = document.createElement("input");
+  document.querySelector(".project-container").append(projectCon);
 
+  const newProject = document.createElement("input");
   newProject.placeholder = "Untitled";
   newProject.classList.add("new-project");
   newProject.setAttribute("id", `${self.crypto.randomUUID()}`);
+  // newProject.value = todoStore.find((el) => {
+  //   el.index === projectIndex;
+  // });
   projectCon.append(newProject);
 
   const delProject = document.createElement("span");
@@ -159,6 +252,10 @@ function projectAdd() {
   projectCon.addEventListener("mouseleave", function (e) {
     delProject.style.display = "none";
   });
+
+  numberOfProjects++;
+  localStorage.setItem("numberOfProjects", numberOfProjects);
+  console.log(numberOfProjects);
 }
 
 function renderToScreen() {
@@ -321,6 +418,26 @@ function closeModal() {
   overlay.classList.add("hidden");
 }
 
+function updatetodoStore() {
+  todoStore = todoStore.filter((el) => el.index !== projectIndex);
+}
+
+// function updateProjectName(e) {
+//   todoStore.forEach((el) => {
+//     if (el.index === projectIndex) {
+//     }
+//     el.projectName = e.target.value;
+//   });
+//   // todoStore = todoStore.map((el) => {
+//   //   if (el.index === projectIndex) el.projectName = "fff";
+//   // });
+// }
+
+function numberOfProjectsReducer() {
+  numberOfProjects--;
+  localStorage.setItem("numberOfProjects", numberOfProjects);
+}
+
 export {
   todoStore,
   pushTodoIntoArray,
@@ -330,5 +447,8 @@ export {
   projectAdd,
   closeModal,
   openModal,
-  // eventListenerForTasks,
+  updatetodoStore,
+  // updateProjectName,
+  // maxIndexValueReduce,
+  numberOfProjectsReducer,
 };
