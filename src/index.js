@@ -40,6 +40,9 @@ submit.addEventListener("click", function () {
     pushTodoIntoArray();
     loopTodoStore();
     renderToScreen();
+    titleInput.value = "";
+    descriptionInput.value = "";
+    dateInput.value = "";
   }
 });
 
