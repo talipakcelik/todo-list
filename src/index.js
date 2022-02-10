@@ -10,107 +10,108 @@ import {
   numberOfProjectsReducer,
   pushProjectIntoArray,
   projectStore,
-} from "./todo.js";
-import style from "./style.css";
-import { format, startOfWeek, endOfWeek, eachDayOfInterval } from "date-fns";
+  counterReducer,
+} from './todo.js';
+import style from './style.css';
+import { format, startOfWeek, endOfWeek, eachDayOfInterval } from 'date-fns';
 
-const taskListAll = document.querySelectorAll(".task-list");
-const titleInput = document.querySelector(".title-input");
-const descriptionInput = document.querySelector(".description-input");
-const dateInput = document.querySelector(".date-input");
-const submit = document.querySelector("#submit");
-const section = document.querySelector("section");
-const menu = document.querySelector("menu");
-const aside = document.querySelector("aside");
-const projectContainer = document.querySelector(".project-container");
-const descriptionContainer = document.querySelector(".description-container");
-const dateContainer = document.querySelector(".date-container");
-const modal = document.querySelector(".modal");
-const overlay = document.querySelector(".overlay");
-const btnCloseModal = document.querySelector(".close-modal");
-const btnOpenModal = document.querySelector(".show-modal");
-const projectTitle = document.querySelector(".project-title");
-const trash = document.querySelector(".trash");
+const taskListAll = document.querySelectorAll('.task-list');
+const titleInput = document.querySelector('.title-input');
+const descriptionInput = document.querySelector('.description-input');
+const dateInput = document.querySelector('.date-input');
+const submit = document.querySelector('#submit');
+const section = document.querySelector('section');
+const menu = document.querySelector('menu');
+const aside = document.querySelector('aside');
+const projectContainer = document.querySelector('.project-container');
+const descriptionContainer = document.querySelector('.description-container');
+const dateContainer = document.querySelector('.date-container');
+const modal = document.querySelector('.modal');
+const overlay = document.querySelector('.overlay');
+const btnCloseModal = document.querySelector('.close-modal');
+const btnOpenModal = document.querySelector('.show-modal');
+const projectTitle = document.querySelector('.project-title');
+const trash = document.querySelector('.trash');
 
 let projectIndex = 0;
 let todoStoreNew = [];
 
-submit.addEventListener("click", function () {
-  if (titleInput.value !== "") {
+submit.addEventListener('click', function () {
+  if (titleInput.value !== '') {
     pushTodoIntoArray();
     loopTodoStore();
     renderToScreen();
-    titleInput.value = "";
-    descriptionInput.value = "";
-    dateInput.value = "";
+    titleInput.value = '';
+    descriptionInput.value = '';
+    dateInput.value = '';
   }
 });
 
-menu.addEventListener("click", function (e) {
-  if (e.target.textContent === "New Project") {
+menu.addEventListener('click', function (e) {
+  if (e.target.textContent === 'New Project') {
     pushProjectIntoArray();
     projectAdd();
 
-    if (!document.querySelector(".project-title")) {
-      if (document.querySelector(".task-container")) {
-        document.querySelector(".task-container").remove();
+    if (!document.querySelector('.project-title')) {
+      if (document.querySelector('.task-container')) {
+        document.querySelector('.task-container').remove();
       }
 
-      projectTitle.textContent = "Untitled";
+      projectTitle.textContent = 'Untitled';
     }
   }
 });
 
-section.addEventListener("click", function (e) {
-  if (e.target.textContent === "Home") {
-    projectTitle.textContent = "Home";
+section.addEventListener('click', function (e) {
+  if (e.target.textContent === 'Home') {
+    projectTitle.textContent = 'Home';
     projectIndex = 0;
   }
-  if (e.target.placeholder === "Untitled") {
-    document.querySelector(".project-title").textContent =
+  if (e.target.placeholder === 'Untitled') {
+    document.querySelector('.project-title').textContent =
       e.target.value || e.target.placeholder;
 
-    projectIndex = e.target.getAttribute("id");
+    projectIndex = e.target.getAttribute('id');
 
-    const allProject = document.querySelectorAll(".new-project");
-    allProject.forEach((project) => {
-      project.addEventListener("input", function (e) {
+    const allProject = document.querySelectorAll('.new-project');
+    allProject.forEach(project => {
+      project.addEventListener('input', function (e) {
         projectTitle.textContent = e.target.value;
-        projectStore.forEach((el) => {
+        projectStore.forEach(el => {
           if (el.index === Number(projectIndex)) {
             el.title = e.target.value;
           }
         });
-        localStorage.setItem("todos", JSON.stringify(todoStore));
-        localStorage.setItem("projects", JSON.stringify(projectStore));
+        localStorage.setItem('todos', JSON.stringify(todoStore));
+        localStorage.setItem('projects', JSON.stringify(projectStore));
       });
     });
   }
-  const displayProject = document.querySelectorAll(".task-list");
+  const displayProject = document.querySelectorAll('.task-list');
   for (const element of displayProject) {
     if (!element.classList.contains(projectIndex)) {
-      element.style.display = "none";
+      element.style.display = 'none';
     } else if (element.classList.contains(projectIndex)) {
-      element.style.display = "";
+      element.style.display = '';
     }
   }
 
-  if (e.target.textContent === "Today") {
-    projectTitle.textContent = "Today";
-    const today = format(new Date(), "yyyy-MM-dd");
+  if (e.target.textContent === 'Today') {
+    projectTitle.textContent = 'Today';
+    const today = format(new Date(), 'yyyy-MM-dd');
 
-    const displayToday = document.querySelectorAll(".date");
+    const displayToday = document.querySelectorAll('.date');
     for (const element of displayToday) {
       if (element.value === today) {
-        element.parentElement.parentElement.style.display = "";
+        element.parentElement.parentElement.style.display = '';
       } else if (element.value !== today) {
-        element.parentElement.parentElement.style.display = "none";
+        element.parentElement.parentElement.style.display = 'none';
       }
     }
   }
 
-  if (e.target.textContent === "This week") {
-    projectTitle.textContent = "This week";
+  if (e.target.textContent === 'This week') {
+    projectTitle.textContent = 'This week';
 
     const today = new Date();
 
@@ -121,26 +122,26 @@ section.addEventListener("click", function (e) {
 
     let thisWeekArray = [];
 
-    interval.forEach((el) => {
-      const formatted = format(el, "yyyy-MM-dd");
+    interval.forEach(el => {
+      const formatted = format(el, 'yyyy-MM-dd');
       thisWeekArray.push(formatted);
     });
 
-    const displayWeek = document.querySelectorAll(".date");
+    const displayWeek = document.querySelectorAll('.date');
     for (const element of displayWeek) {
       if (thisWeekArray.includes(element.value)) {
-        element.parentElement.parentElement.style.display = "";
+        element.parentElement.parentElement.style.display = '';
       } else {
-        element.parentElement.parentElement.style.display = "none";
+        element.parentElement.parentElement.style.display = 'none';
       }
     }
   }
 
-  if (e.target.name === "trash-outline") {
-    e.target.parentElement.parentElement.style.display = "none";
+  if (e.target.name === 'trash-outline') {
+    e.target.parentElement.parentElement.style.display = 'none';
     // e.target.parentElement.parentElement.remove();
 
-    const displayProject = document.querySelectorAll(".task-list");
+    const displayProject = document.querySelectorAll('.task-list');
     for (const element of displayProject) {
       if (element.classList.contains(projectIndex)) {
         element.remove();
@@ -148,50 +149,52 @@ section.addEventListener("click", function (e) {
     }
 
     projectIndex =
-      e.target.parentElement.parentElement.children[0].getAttribute("id");
+      e.target.parentElement.parentElement.children[0].getAttribute('id');
 
     updatetodoStore();
 
-    document.querySelector(".project-title").textContent = "";
+    document.querySelector('.project-title').textContent = '';
 
     numberOfProjectsReducer();
-    if (localStorage.getItem("todos") !== null) {
-      localStorage.setItem("todos", JSON.stringify(todoStore));
+    if (localStorage.getItem('todos') !== null) {
+      localStorage.setItem('todos', JSON.stringify(todoStore));
     }
 
     const foundProject = projectStore.findIndex(
-      (el) =>
+      el =>
         el.index ===
         Number(
-          e.target.parentElement.parentElement.children[0].getAttribute("id")
+          e.target.parentElement.parentElement.children[0].getAttribute('id')
         )
     );
 
     projectStore.splice(foundProject, 1);
 
-    localStorage.setItem("projects", JSON.stringify(projectStore));
+    counterReducer();
+
+    localStorage.setItem('projects', JSON.stringify(projectStore));
   }
 });
 
-btnOpenModal.addEventListener("click", openModal);
-btnCloseModal.addEventListener("click", closeModal);
-overlay.addEventListener("click", closeModal);
+btnOpenModal.addEventListener('click', openModal);
+btnCloseModal.addEventListener('click', closeModal);
+overlay.addEventListener('click', closeModal);
 
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
     closeModal();
   }
 });
 
-trash.addEventListener("click", function () {
-  const taskTitleAll = document.querySelectorAll(".task-title");
+trash.addEventListener('click', function () {
+  const taskTitleAll = document.querySelectorAll('.task-title');
   for (const element of taskTitleAll) {
-    if (element.style.textDecoration === "line-through") {
+    if (element.style.textDecoration === 'line-through') {
       element.parentElement.remove();
     }
   }
 
-  const atLeast = todoStore.some((el) => el.check === true);
+  const atLeast = todoStore.some(el => el.check === true);
 
   if (atLeast === false) {
     alert(
@@ -202,8 +205,8 @@ trash.addEventListener("click", function () {
   // because of todoStore in another module, it was not possible to edit the todostore
   // needed to create a new array
 
-  todoStoreNew = todoStore.filter((el) => el.check !== true);
-  localStorage.setItem("todos", JSON.stringify(todoStoreNew));
+  todoStoreNew = todoStore.filter(el => el.check !== true);
+  localStorage.setItem('todos', JSON.stringify(todoStoreNew));
 });
 
 export {
