@@ -235,6 +235,7 @@ button:hover {
   text-decoration: overline hsla(50, 42%, 48%, 1);
   color: hsl(233, 45%, 69%);
   word-spacing: 2.9rem;
+  font-size: 2.3rem;
 }
 
 ion-icon {
@@ -310,7 +311,10 @@ ion-icon:hover {
 }
 
 .close-modal:hover {
-  background-color: hsla(227, 44%, 59%, 1);
+  color: #fff;
+  background-color: hsla(227, 58%, 65%, 1);
+
+  /* background-color: hsla(227, 44%, 59%, 1); */
 }
 
 .modal {
@@ -431,6 +435,7 @@ input[type="checkbox"]:checked {
 [contenteditable="true"] {
   /* border: none; */
   /* caret-color: red; */
+  caret-color: hsla(153, 46%, 49%, 1);
 }
 
 h3 {
