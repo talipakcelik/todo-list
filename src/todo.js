@@ -361,7 +361,15 @@ function eventListenerForTasks() {
   });
   const taskTitleAll = document.querySelectorAll('.task-title');
   taskTitleAll.forEach(task => {
-    task.addEventListener('input', function (e) {});
+    task.addEventListener('input', function (e) {
+      const foundTitle = todoStore.find(
+        el => el.id === e.currentTarget.parentElement.getAttribute('id')
+      );
+
+      foundTitle.title = e.currentTarget.textContent;
+
+      localStorage.setItem('todos', JSON.stringify(todoStore));
+    });
   });
 }
 
