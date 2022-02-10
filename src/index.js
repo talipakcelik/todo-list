@@ -35,6 +35,7 @@ const trash = document.querySelector('.trash');
 
 let projectIndex = 0;
 let todoStoreNew = [];
+let currentTab = 'Home';
 
 submit.addEventListener('click', function () {
   if (titleInput.value !== '') {
@@ -64,10 +65,12 @@ menu.addEventListener('click', function (e) {
 
 section.addEventListener('click', function (e) {
   if (e.target.textContent === 'Home') {
+    currentTab = 'Home';
     projectTitle.textContent = 'Home';
     projectIndex = 0;
   }
   if (e.target.placeholder === 'Untitled') {
+    currentTab = 'Project';
     document.querySelector('.project-title').textContent =
       e.target.value || e.target.placeholder;
 
@@ -97,6 +100,8 @@ section.addEventListener('click', function (e) {
   }
 
   if (e.target.textContent === 'Today') {
+    currentTab = 'Today';
+
     projectTitle.textContent = 'Today';
     const today = format(new Date(), 'yyyy-MM-dd');
 
@@ -111,6 +116,7 @@ section.addEventListener('click', function (e) {
   }
 
   if (e.target.textContent === 'This week') {
+    currentTab = 'This week';
     projectTitle.textContent = 'This week';
 
     const today = new Date();
@@ -221,4 +227,5 @@ export {
   dateInput,
   dateContainer,
   taskListAll,
+  currentTab,
 };

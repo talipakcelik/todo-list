@@ -6,6 +6,7 @@ import {
   overlay,
   descriptionInput,
   dateInput,
+  currentTab,
 } from './index.js';
 
 class todoCreator {
@@ -191,7 +192,6 @@ function projectAdd() {
   projectCon.classList.add('project-sub-container');
   document.querySelector('.project-container').append(projectCon);
 
-  console.log(projectStore, k);
   const newProject = document.createElement('input');
   newProject.placeholder = 'Untitled';
   newProject.classList.add('new-project');
@@ -368,8 +368,12 @@ function eventListenerForTasks() {
 eventListenerForTasks();
 
 function openModal() {
-  modal.classList.add('active');
-  overlay.classList.remove('hidden');
+  if (currentTab !== 'Today' && currentTab !== 'This week') {
+    modal.classList.add('active');
+    overlay.classList.remove('hidden');
+  } else {
+    alert(`New task cannot be added to the '${currentTab}' tab ❗`);
+  }
 }
 
 function closeModal() {
