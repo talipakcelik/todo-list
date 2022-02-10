@@ -176,6 +176,9 @@ section.addEventListener('click', function (e) {
 
     projectStore.splice(foundProject, 1);
 
+    document.querySelector('.description-2').textContent = ' ';
+    document.querySelector('.date-2').textContent = ' ';
+
     counterReducer();
 
     localStorage.setItem('projects', JSON.stringify(projectStore));
