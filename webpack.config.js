@@ -29,6 +29,18 @@ module.exports = {
       { test: /\.css$/, use: ["style-loader", "css-loader"] },
       // images
       { test: /\.(svg|ico|png|webp|jpg|gif|jpeg)$/, type: "asset/resource" },
+      // js for babel
+      {
+        test: /\.m?js$/,
+        // exclude node_modules from test
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: [["@babel/preset-env", { targets: "defaults" }]],
+          },
+        },
+      },
     ],
   },
   //plugins
